@@ -1,0 +1,339 @@
+﻿
+@model BloodDonorApp.Models.Donor
+
+@{
+    ViewData["Title"] = "My Profile";
+
+    DateTime today = DateTime.Today;
+    DateTime? nextEligibleDate =
+        Model.LastDonationDate?.Date.AddMonths(6);
+
+    bool eligibleByInterval =
+        !nextEligibleDate.HasValue ||
+        today >= nextEligibleDate.Value;
+
+    string? toastMessage = TempData["ToastMessage"] as string;
+    string? profileError = TempData["ProfileError"] as string;
+    string? donationError = TempData["DonationError"] as string;
+}
+
+<div class="container py-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">My Donor Profile</h2>
+            <p class="text-muted mb-0">
+                Manage your information and donation availability.
+            </p>
+        </div>
+    </div>
+
+    <!-- DONATION AVAILABILITY STATUS -->
+    @if (eligibleByInterval)
+    {
+        <div class="alert alert-success rounded-4 p-4 mb-4">
+            <h5 class="fw-bold mb-2">
+                Eligible by Donation Interval
+            </h5>
+            <p class="mb-0">
+                You haven't recorded a blood donation in the past
+                6 months! Go save a life with your blood.
+            </p>
+            @if (!Model.LastDonationDate.HasValue)
+            {
+                <small class="d-block mt-2">
+                    No previous donation date has been recorded.
+                </small>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-danger rounded-4 p-4 mb-4">
+            <h5 class="fw-bold mb-2">
+                Not Eligible by Donation Interval
+            </h5>
+            <p class="mb-0">
+                You are not eligible for blood donation until
+                <strong>
+                    @nextEligibleDate!.Value.ToString("dd/MM/yyyy")
+                </strong>.
+            </p>
+        </div>
+    }
+
+    <!-- RECENT BLOOD DONATION SECTION -->
+    <div class="card border-0 shadow rounded-4 mb-4">
+        <div class="card-body p-4">
+
+            <h4 class="fw-bold mb-2">
+                Have you donated blood recently?
+            </h4>
+
+            <p class="text-muted small">
+                Update your most recent donation date to automatically
+                recalculate your availability.
+            </p>
+
+            <form asp-controller="Account"
+                  asp-action="UpdateDonationDate"
+                  method="post">
+
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <label class="form-label fw-semibold">
+                            Latest Blood Donation Date
+                        </label>
+
+                        <input type="date"
+                               name="lastDonationDate"
+                               class="form-control"
+                               value="@(Model.LastDonationDate?.ToString("yyyy-MM-dd"))"
+                               max="@today.ToString("yyyy-MM-dd")"
+                               required />
+                    </div>
+
+                    <div class="col-md-4">
+                        <button type="submit"
+                                class="btn btn-danger w-100">
+                            Update Donation Date
+                        </button>
+                    </div>
+                </div>
+
+                @if (!string.IsNullOrEmpty(donationError))
+                {
+                    <span class="text-danger d-block mt-2"
+                          style="font-size:12px;">
+                        @donationError
+                    </span>
+                }
+
+            </form>
+        </div>
+    </div>
+
+    <!-- PERSONAL DETAILS -->
+    <div class="card border-0 shadow rounded-4 mb-4">
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h4 class="fw-bold mb-0">Personal Details</h4>
+
+                <button type="button"
+                        id="editButton"
+                        class="btn btn-outline-danger"
+                        onclick="enableEditing()">
+                    Update Details
+                </button>
+            </div>
+
+            @if (!string.IsNullOrEmpty(profileError))
+            {
+                <div class="alert alert-danger">
+                    @profileError
+                </div>
+            }
+
+            <form asp-controller="Account"
+                  asp-action="UpdateProfile"
+                  method="post">
+
+                <div class="row g-3">
+
+                    <div class="col-md-6">
+                        <label class="form-label">First Name</label>
+                        <input name="FirstName"
+                               value="@Model.FirstName"
+                               class="form-control editable-field"
+                               readonly required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Last Name</label>
+                        <input name="LastName"
+                               value="@Model.LastName"
+                               class="form-control editable-field"
+                               readonly required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Blood Group</label>
+                        <input value="@Model.BloodGroup"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Date of Birth</label>
+                        <input value="@Model.DateOfBirth.ToString("dd/MM/yyyy")"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Gender</label>
+                        <input value="@Model.Gender"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input name="Email"
+                               type="email"
+                               value="@Model.Email"
+                               class="form-control editable-field"
+                               readonly required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Mobile Number</label>
+                        <input value="@Model.MobileNumber"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">State</label>
+                        <input name="State"
+                               value="@Model.State"
+                               class="form-control editable-field"
+                               readonly required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">City</label>
+                        <input name="City"
+                               value="@Model.City"
+                               class="form-control editable-field"
+                               readonly />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">PIN Code</label>
+                        <input name="PinCode"
+                               value="@Model.PinCode"
+                               class="form-control editable-field"
+                               maxlength="6"
+                               pattern="[0-9]{6}"
+                               readonly required />
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Has Disability</label>
+                        <select name="HasDisability"
+                                class="form-select editable-field"
+                                disabled>
+                            <option value="false"
+                                    selected="@(!Model.HasDisability)">No</option>
+                            <option value="true"
+                                    selected="@(Model.HasDisability)">Yes</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Has Tattoo</label>
+                        <select name="HasTattoo"
+                                class="form-select editable-field"
+                                disabled>
+                            <option value="false"
+                                    selected="@(!Model.HasTattoo)">No</option>
+                            <option value="true"
+                                    selected="@(Model.HasTattoo)">Yes</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div id="editActions"
+                     class="d-none justify-content-end gap-2 mt-4">
+
+                    <button type="button"
+                            class="btn btn-outline-secondary"
+                            onclick="cancelEditing()">
+                        Cancel
+                    </button>
+
+                    <button type="submit"
+                            class="btn btn-danger">
+                        Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- SUCCESS TOAST -->
+@if (!string.IsNullOrEmpty(toastMessage))
+{
+    <div class="toast-container position-fixed end-0 p-3"
+         style="top:80px; z-index:1080;">
+
+        <div id="profileToast"
+             class="toast border-0 rounded-3 shadow overflow-hidden"
+             role="status"
+             aria-live="polite"
+             aria-atomic="true"
+             data-bs-autohide="true"
+             data-bs-delay="4000">
+
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Success</strong>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="toast"
+                        aria-label="Close"></button>
+            </div>
+
+            <div class="toast-body">
+                @toastMessage
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function enableEditing() {
+            document.querySelectorAll(".editable-field").forEach(field => {
+                if (field.tagName === "SELECT") {
+                    field.disabled = false;
+                } else {
+                    field.readOnly = false;
+                }
+            });
+
+            document.getElementById("editButton")
+                .classList.add("d-none");
+
+            const actions = document.getElementById("editActions");
+            actions.classList.remove("d-none");
+            actions.classList.add("d-flex");
+        }
+
+        function cancelEditing() {
+            window.location.reload();
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastElement = document.getElementById("profileToast");
+
+            if (toastElement && typeof bootstrap !== "undefined") {
+                const toast = bootstrap.Toast.getOrCreateInstance(
+                    toastElement,
+                    {
+                        autohide: true,
+                        delay: 2000
+                    }
+                );
+
+                toast.show();
+            }
+        });
+    </script>
+}

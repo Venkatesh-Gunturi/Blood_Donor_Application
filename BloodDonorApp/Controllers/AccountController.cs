@@ -2,11 +2,12 @@
 using BloodDonorApp.Data;
 using BloodDonorApp.Models;
 using BloodDonorApp.ViewModels;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
 
 namespace BloodDonorApp.Controllers
@@ -368,6 +369,170 @@ namespace BloodDonorApp.Controllers
 
             return RedirectToAction("Login");
         }
+
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Profile()
+        {
+            string? donorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(donorId, out int id))
+                return RedirectToAction("Login");
+
+            var donor = await _context.Donors
+                .AsNoTracking()
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (donor == null)
+                return NotFound();
+
+            return View(donor);
+        }
+
+
+
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateProfile(
+            UpdateProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["ProfileError"] =
+                    "Please correct the invalid profile details.";
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            string? donorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(donorId, out int id))
+                return RedirectToAction("Login");
+
+            var donor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (donor == null)
+                return NotFound();
+
+            string email = model.Email.Trim().ToLowerInvariant();
+
+            bool emailExists = await _context.Donors
+                .AnyAsync(d => d.Email.ToLower() == email && d.Id != id);
+
+            if (emailExists)
+            {
+                TempData["ProfileError"] =
+                    "This email address is already registered.";
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            donor.FirstName = model.FirstName.Trim();
+            donor.LastName = model.LastName.Trim();
+            donor.Email = email;
+            donor.State = model.State.Trim();
+            donor.City = model.City?.Trim();
+            donor.PinCode = model.PinCode;
+            donor.HasDisability = model.HasDisability;
+            donor.HasTattoo = model.HasTattoo;
+
+            await _context.SaveChangesAsync();
+
+            // Refresh the donor's authentication claims.
+            var existingAuth = await HttpContext.AuthenticateAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.NameIdentifier, donor.Id.ToString()),
+        new Claim(ClaimTypes.Name, donor.FirstName),
+        new Claim(ClaimTypes.Email, donor.Email)
+    };
+
+            var identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                new ClaimsPrincipal(identity),
+                existingAuth.Properties ?? new AuthenticationProperties()
+            );
+
+            TempData["ToastMessage"] =
+                "Details updated successfully!";
+
+            return RedirectToAction(nameof(Profile));
+        }
+
+
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateDonationDate(
+            DateTime? lastDonationDate)
+        {
+            string? donorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(donorId, out int id))
+                return RedirectToAction("Login");
+
+            var donor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (donor == null)
+                return NotFound();
+
+            if (!lastDonationDate.HasValue)
+            {
+                TempData["DonationError"] =
+                    "Please select your latest blood donation date.";
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            DateTime selectedDate = lastDonationDate.Value.Date;
+
+            if (selectedDate > DateTime.Today)
+            {
+                TempData["DonationError"] =
+                    "Donation date cannot be in the future.";
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            if (selectedDate < donor.DateOfBirth.Date)
+            {
+                TempData["DonationError"] =
+                    "Donation date cannot be before your date of birth.";
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            // This section records the most recent donation.
+            if (donor.LastDonationDate.HasValue &&
+                selectedDate < donor.LastDonationDate.Value.Date)
+            {
+                TempData["DonationError"] =
+                    "The latest donation date cannot be earlier than the recorded date.";
+
+                return RedirectToAction(nameof(Profile));
+            }
+
+            donor.LastDonationDate = selectedDate;
+
+            await _context.SaveChangesAsync();
+
+            TempData["ToastMessage"] =
+                "Latest blood donated date has been updated successfully!";
+
+            return RedirectToAction(nameof(Profile));
+        }
+
 
 
     }
