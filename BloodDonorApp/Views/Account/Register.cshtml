@@ -283,7 +283,11 @@
 
                         <p class="text-center text-muted small mt-3 mb-0">
                             Already registered?
-                            <span class="text-danger fw-semibold">Login</span>
+                            <a asp-controller="Account"
+                                   asp-action="Login"
+                                   class="text-primary">
+                                    Login
+                                </a>
                         </p>
 
                     </form>

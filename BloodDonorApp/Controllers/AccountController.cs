@@ -49,6 +49,13 @@ namespace BloodDonorApp.Controllers
                 }
             }
 
+            if (!model.AcceptPublicContact)
+            {
+                ModelState.AddModelError(
+                    nameof(model.AcceptPublicContact),
+                    "You must agree before registering.");
+            }
+
             // Step 1: Validate the registration form
             if (!ModelState.IsValid)
             {
@@ -103,12 +110,7 @@ namespace BloodDonorApp.Controllers
                 MobileNumber = mobile
             };
 
-            if (!model.AcceptPublicContact)
-            {
-                ModelState.AddModelError(
-                    nameof(model.AcceptPublicContact),
-                    "You must agree before registering.");
-            }
+            
 
             // Step 5: Hash the password before saving
             var passwordHasher = new PasswordHasher<Donor>();
@@ -121,11 +123,37 @@ namespace BloodDonorApp.Controllers
             _context.Donors.Add(donor);
             await _context.SaveChangesAsync();
 
-            // Step 7: Redirect after successful registration
-            TempData["SuccessMessage"] =
+
+            // Step 7: Automatically log in the newly registered donor
+            var claims = new List<Claim>
+{
+    new Claim(ClaimTypes.NameIdentifier, donor.Id.ToString()),
+    new Claim(ClaimTypes.Name, donor.FirstName),
+    new Claim(ClaimTypes.Email, donor.Email)
+};
+
+            var identity = new ClaimsIdentity(
+                claims,
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
+            var principal = new ClaimsPrincipal(identity);
+
+            await HttpContext.SignInAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme,
+                principal,
+                new AuthenticationProperties
+                {
+                    IsPersistent = false
+                }
+            );
+
+            // Step 8: Show success toast on Home page
+            TempData["ToastMessage"] =
                 "Registration completed successfully!";
 
             return RedirectToAction("Index", "Home");
+
         }
 
         [HttpGet]
@@ -206,7 +234,7 @@ namespace BloodDonorApp.Controllers
                     IsPersistent = model.RememberMe
                 }
             );
-
+            TempData["ToastMessage"] = "Login successful! Welcome back.";
             return RedirectToAction("Index", "Home");
         }
 

@@ -6,3 +6,58 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+
+
+@if (TempData["ToastMessage"] is string toastMessage)
+{
+    <div class="toast-container position-fixed end-0 p-3"
+         style="top: 80px; z-index: 1050;">
+
+        <div id="successToast"
+             class="toast border-0 rounded-5 shadow "
+             role="status"
+             aria-live="polite"
+             aria-atomic="true"
+             data-bs-autohide="true"
+             data-bs-delay="4000">
+
+            <div class="toast-header bg-success text-white">
+                <strong class="me-auto">Success</strong>
+
+                <button type="button"
+                        class="btn-close btn-close-white"
+                        data-bs-dismiss="toast"
+                        aria-label="Close">
+                </button>
+            </div>
+
+            <div class="toast-body">
+                @toastMessage
+            </div>
+
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const toastElement = document.getElementById("successToast");
+
+            if (toastElement) {
+                const toast = bootstrap.Toast.getOrCreateInstance(
+                    toastElement,
+                    {
+                        autohide: true,
+                        delay: 2000
+                    }
+                );
+
+                toast.show();
+            }
+        });
+    </script>
+}
+
