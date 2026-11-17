@@ -1,0 +1,22 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build outputs
+**/bin/
+**/obj/
+
+# Local configuration
+**/appsettings.Development.json
+**/appsettings.Local.json
+.env
+.env.*
+
+# Database files
+*.mdf
+*.ldf
+*.bak
+
+# Logs
+*.log

@@ -1,0 +1,356 @@
+﻿@model BloodDonorApp.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Donor Registration";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-9">
+
+            <div class="card border-0 shadow rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <!-- Registration Heading -->
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold mb-2">
+                            🩸 Donor Registration
+                        </h2>
+                        <p class="text-muted small mb-0">
+                            Become a blood donor and help save lives.
+                        </p>
+                    </div>
+
+                    <form asp-controller="Account"
+                          asp-action="Register"
+                          method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-danger small mb-3"></div>
+
+                        <!-- Personal Information -->
+                        <h5 class="fw-bold text-danger mb-3">
+                            Personal Information
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label asp-for="FirstName" class="form-label fw-semibold">
+                                    First Name <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastName" class="form-label fw-semibold">
+                                    Last Name <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <!-- Date of Birth -->
+                            <div class="col-md-6">
+                                <label asp-for="DateOfBirth" class="form-label fw-semibold">
+                                    Date of Birth <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                                <span asp-validation-for="DateOfBirth" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Gender" class="form-label fw-semibold">
+                                    Gender <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="Gender" class="form-select">
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="BloodGroup" class="form-label fw-semibold">
+                                    Blood Group <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="BloodGroup" class="form-select">
+                                    <option value="">Select Blood Group</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="Oh">Bombay (Oh)</option>
+                                </select>
+                                <span asp-validation-for="BloodGroup" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="State" class="form-label fw-semibold">
+                                    State / Union Territory <span class="text-danger">*</span>
+                                </label>
+                                <select asp-for="State" class="form-select">
+                                    <option value="">Select State / UT</option>
+                                    <option>Andhra Pradesh</option>
+                                    <option>Arunachal Pradesh</option>
+                                    <option>Assam</option>
+                                    <option>Bihar</option>
+                                    <option>Chhattisgarh</option>
+                                    <option>Goa</option>
+                                    <option>Gujarat</option>
+                                    <option>Haryana</option>
+                                    <option>Himachal Pradesh</option>
+                                    <option>Jharkhand</option>
+                                    <option>Karnataka</option>
+                                    <option>Kerala</option>
+                                    <option>Madhya Pradesh</option>
+                                    <option>Maharashtra</option>
+                                    <option>Manipur</option>
+                                    <option>Meghalaya</option>
+                                    <option>Mizoram</option>
+                                    <option>Nagaland</option>
+                                    <option>Odisha</option>
+                                    <option>Punjab</option>
+                                    <option>Rajasthan</option>
+                                    <option>Sikkim</option>
+                                    <option>Tamil Nadu</option>
+                                    <option>Telangana</option>
+                                    <option>Tripura</option>
+                                    <option>Uttar Pradesh</option>
+                                    <option>Uttarakhand</option>
+                                    <option>West Bengal</option>
+                                    <option>Andaman and Nicobar Islands</option>
+                                    <option>Chandigarh</option>
+                                    <option>Dadra and Nagar Haveli and Daman and Diu</option>
+                                    <option>Delhi</option>
+                                    <option>Jammu and Kashmir</option>
+                                    <option>Ladakh</option>
+                                    <option>Lakshadweep</option>
+                                    <option>Puducherry</option>
+                                </select>
+                                <span asp-validation-for="State" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="City" class="form-label fw-semibold">
+                                    City <span class="text-muted fw-normal small">(Optional)</span>
+                                </label>
+                                <input asp-for="City" class="form-control"
+                                       placeholder="Enter your city" />
+                                <span asp-validation-for="City" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="PinCode" class="form-label fw-semibold">
+                                    PIN Code <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="PinCode" class="form-control"
+                                       maxlength="6" inputmode="numeric"
+                                       placeholder="6-digit PIN code" />
+                                <span asp-validation-for="PinCode" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="HasDisability" class="form-label fw-semibold">
+                                    Do you have a disability?
+                                </label>
+                                <select asp-for="HasDisability" class="form-select">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="HasTattoo" class="form-label fw-semibold">
+                                    Do you have a tattoo?
+                                </label>
+                                <select asp-for="HasTattoo" class="form-select">
+                                    <option value="false">No</option>
+                                    <option value="true">Yes</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="LastDonationDate" class="form-label fw-semibold">
+                                    Last Donation Date
+                                    <span class="text-muted fw-normal small">(Optional)</span>
+                                </label>
+                                <input asp-for="LastDonationDate" type="date"
+                                       class="form-control" />
+                                <span asp-validation-for="LastDonationDate" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Contact Information -->
+                        <h5 class="fw-bold text-danger mb-3">
+                            Contact Information
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label asp-for="Email" class="form-label fw-semibold">
+                                    Email Address <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Email" type="email" class="form-control"
+                                       placeholder="example@gmail.com" />
+                                <span asp-validation-for="Email" class="text-danger small" style="font-size: 12px;"></span>
+                                <div class="form-text">
+                                    Your email will be visible to people looking for donors.
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="MobileNumber" class="form-label fw-semibold">
+                                    Mobile Number <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="MobileNumber" type="tel"
+                                       class="form-control"
+                                       maxlength="10" inputmode="numeric"
+                                       placeholder="10-digit mobile number" />
+                                <span asp-validation-for="MobileNumber" class="text-danger small" style="font-size: 12px;"></span>
+                                <div class="form-text">
+                                    Your mobile number will remain private.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <!-- Account Security -->
+                        <h5 class="fw-bold text-danger mb-3">
+                            Account Security
+                        </h5>
+
+                        <div class="row g-3">
+
+                            <div class="col-md-6">
+                                <label asp-for="Password" class="form-label fw-semibold">
+                                    Password <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="Password" type="password"
+                                       class="form-control"
+                                       placeholder="Minimum 8 characters" />
+                                <span asp-validation-for="Password" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ConfirmPassword" class="form-label fw-semibold">
+                                    Confirm Password <span class="text-danger">*</span>
+                                </label>
+                                <input asp-for="ConfirmPassword" type="password"
+                                       class="form-control"
+                                       placeholder="Re-enter your password" />
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small" style="font-size: 12px;"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- Public Contact Agreement -->
+                        <div class="form-check mt-4">
+                            <input asp-for="AcceptPublicContact"
+       class="form-check-input"
+       required />
+
+                            <label for="AcceptPublicContact"
+                                   class="form-check-label small">
+                                I understand that my email address will be publicly
+                                visible to people searching for blood donors,
+                                while my mobile number will remain private.
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <span asp-validation-for="AcceptPublicContact"
+                                  class="text-danger small d-block"  style="font-size:12px;"></span>
+                        </div>
+
+                        <!-- Submit -->
+                        <button type="submit"
+                                class="btn btn-danger btn-lg w-100 mt-4 rounded-3 fw-semibold">
+                            🩸 Register as Donor
+                        </button>
+
+                        <p class="text-center text-muted small mt-3 mb-0">
+                            Already registered?
+                            <span class="text-danger fw-semibold">Login</span>
+                        </p>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Date of Birth validation
+        const dobInput = document.getElementById("DateOfBirth");
+        const dobError = document.querySelector('[data-valmsg-for="DateOfBirth"]');
+
+        dobInput.addEventListener("change", function () {
+            if (!this.value) {
+                dobError.textContent = "";
+                dobInput.setCustomValidity("");
+                return;
+            }
+
+            const dob = new Date(this.value + "T00:00:00");
+            const today = new Date();
+
+            let age = today.getFullYear() - dob.getFullYear();
+
+            if (today.getMonth() < dob.getMonth() ||
+                (today.getMonth() === dob.getMonth() &&
+                 today.getDate() < dob.getDate())) {
+                age--;
+            }
+
+            if (age < 18 || age >= 66) {
+                dobError.textContent =
+                    "People below 18 or aged 66 and above are not eligible to donate blood.";
+                dobInput.setCustomValidity("Invalid donor age");
+            } else {
+                dobError.textContent = "";
+                dobInput.setCustomValidity("");
+            }
+        });
+
+        // Agreement checkbox validation
+        
+const agreement = document.getElementById("AcceptPublicContact");
+const agreementError = document.querySelector(
+    '[data-valmsg-for="AcceptPublicContact"]'
+);
+
+agreement.addEventListener("change", function () {
+    if (this.checked) {
+        agreementError.textContent = "";
+        agreementError.classList.remove("field-validation-error");
+        agreementError.classList.add("field-validation-valid");
+    } else {
+        agreementError.textContent = "You must agree before registering.";
+        agreementError.classList.remove("field-validation-valid");
+        agreementError.classList.add("field-validation-error");
+    }
+});
+
+
+    </script>
+}
+
