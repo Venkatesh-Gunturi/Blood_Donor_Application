@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace BloodDonorApp.ViewModels
 {
@@ -16,4 +15,3 @@ namespace BloodDonorApp.ViewModels
         public string MobileNumber { get; set; } = string.Empty;
     }
 }
-
