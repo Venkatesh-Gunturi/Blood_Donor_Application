@@ -535,5 +535,75 @@ namespace BloodDonorApp.Controllers
 
 
 
+        // GET: /Account/DeleteAccount
+        [HttpGet]
+        [Authorize]
+        public IActionResult DeleteAccount()
+        {
+            return View();
+        }
+
+
+        // POST: /Account/DeleteAccount
+        [HttpPost]
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        [ActionName("DeleteAccount")]
+        public async Task<IActionResult> ConfirmDeleteAccount(string password)
+        {
+            // Identify the currently logged-in donor
+            string? donorId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (!int.TryParse(donorId, out int id))
+                return RedirectToAction("Login");
+
+            // Find the donor using the authenticated account ID
+            var donor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.Id == id);
+
+            if (donor == null)
+                return NotFound();
+
+            // Password must be provided
+            if (string.IsNullOrWhiteSpace(password))
+            {
+                ModelState.AddModelError("password",
+                    "Please enter your current password.");
+
+                return View("DeleteAccount");
+            }
+
+            // Verify the current password
+            var passwordHasher = new PasswordHasher<Donor>();
+
+            var result = passwordHasher.VerifyHashedPassword(
+                donor,
+                donor.PasswordHash,
+                password
+            );
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                ModelState.AddModelError("password",
+                    "Incorrect password. Account was not deleted.");
+
+                return View("DeleteAccount");
+            }
+
+            // Permanently delete the donor record
+            _context.Donors.Remove(donor);
+            await _context.SaveChangesAsync();
+
+            // Sign out after successful deletion
+            await HttpContext.SignOutAsync(
+                CookieAuthenticationDefaults.AuthenticationScheme
+            );
+
+            TempData["ToastMessage"] =
+                "Your account has been deleted successfully.";
+
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }

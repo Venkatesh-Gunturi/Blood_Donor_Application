@@ -20,3 +20,19 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* Mobile offcanvas - 50% of screen width */
+@media (max-width: 991.98px) {
+    #mobileMenu {
+        --bs-offcanvas-width: 50vw !important;
+        width: 50vw !important;
+        max-width: 50vw !important;
+    }
+}
+
+/* Hide mobile offcanvas on desktop */
+@media (min-width: 992px) {
+    #mobileMenu {
+        display: none !important;
+    }
+}

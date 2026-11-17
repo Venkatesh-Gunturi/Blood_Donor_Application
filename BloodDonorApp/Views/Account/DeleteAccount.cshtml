@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewData["Title"] = "Delete Account";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6">
+
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <div class="display-4 mb-3">⚠️</div>
+
+                        <h2 class="fw-bold text-danger">
+                            Delete Your Account
+                        </h2>
+
+                        <p class="text-muted">
+                            Please review the following
+                            information before proceeding.
+                        </p>
+                    </div>
+
+                    <div class="alert alert-danger rounded-3">
+                        <h6 class="fw-bold">
+                            This action is permanent!
+                        </h6>
+
+                        <ul class="mb-0">
+                            <li>Your donor profile will be deleted.</li>
+                            <li>You will no longer appear in donor searches.</li>
+                            <li>Your registered information will be removed.</li>
+                            <li>You will be signed out automatically.</li>
+                            <li>You must register again to become a donor.</li>
+                        </ul>
+                    </div>
+
+                    <form asp-controller="Account"
+                          asp-action="DeleteAccount"
+                          method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        <div class="mb-4">
+                            <label for="password"
+                                   class="form-label fw-semibold">
+                                Enter Your Current Password
+                            </label>
+
+                            <input type="password"
+                                   id="password"
+                                   name="password"
+                                   class="form-control"
+                                   placeholder="Enter your password"
+                                   autocomplete="current-password"
+                                   required />
+
+                            @Html.ValidationMessage(
+                                "password",
+                                "",
+                                new { @class = "text-danger small" }
+                            )
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit"
+                                    class="btn btn-danger py-2 fw-semibold">
+                                Permanently Delete My Account
+                            </button>
+
+                            <a asp-controller="Account"
+                               asp-action="Profile"
+                               class="btn btn-outline-secondary py-2">
+                                Cancel — Keep My Account
+                            </a>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

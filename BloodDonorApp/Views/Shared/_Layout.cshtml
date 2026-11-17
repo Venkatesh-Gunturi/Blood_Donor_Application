@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    string? currentController = ViewContext.RouteData.Values["controller"]?.ToString();
+    string? currentAction = ViewContext.RouteData.Values["action"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,109 +18,179 @@
 <body>
     <header>
         
-<nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom shadow-sm mb-3">
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
     <div class="container-fluid">
 
-        <a class="navbar-brand fw-bold text-danger"
-           asp-controller="Home" asp-action="Index">
-            🩸 BloodDonorApp
-        </a>
-
-        <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarMenu"
-                aria-controls="navbarMenu"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+        <!-- Mobile hamburger - LEFT -->
+        <button class="navbar-toggler d-lg-none me-3"
+                type="button"
+                data-bs-toggle="offcanvas"
+                data-bs-target="#mobileMenu"
+                aria-controls="mobileMenu"
+                aria-label="Open navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarMenu">
+        <!-- Brand / Logo -->
+        <a class="navbar-brand me-auto me-lg-5"
+           asp-controller="Home"
+           asp-action="Index">
+            🩸
+            <span class="d-none d-md-inline">
+                BloodDonorApp
+            </span>
+            <span class="d-md-none">
+                Blood Donor
+            </span>
+        </a>
 
-            <ul class="navbar-nav me-auto">
+        <!-- Desktop navigation -->
+        <div class="d-none d-lg-flex align-items-center ms-lg-4">
+            <ul class="navbar-nav gap-lg-3">
+
                 <li class="nav-item">
-                    <a class="nav-link text-dark"
-                       asp-controller="Home" asp-action="Index">
+                    <a class="nav-link text-dark @(currentController == "Home" && currentAction == "Index" ? "border-bottom border-danger border-3" : "")"
+                       asp-controller="Home"
+                       asp-action="Index">
                         Home
                     </a>
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-dark"
-                       asp-controller="Home" asp-action="Privacy">
-                        Privacy
+                    <a class="nav-link text-dark @(currentController == "Home" && currentAction == "LearnMore" ? "border-bottom border-danger border-3" : "")"
+                       asp-controller="Home"
+                       asp-action="LearnMore">
+                        🩸Blood Guide &Donation
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link text-dark @(currentController == "Home" && currentAction == "Privacy" ? "border-bottom border-danger border-3" : "")"
+                       asp-controller="Home"
+                       asp-action="Privacy">
+                        Privacy & Policy
+                    </a>
+                </li>
+
             </ul>
+        </div>
 
-            <div class="d-flex align-items-center gap-2">
+        <!-- Login/Register or Profile - ALWAYS RIGHT -->
+        <div class="ms-auto d-flex align-items-center gap-2">
 
-               
-@if (User.Identity?.IsAuthenticated == true)
-{
-    <div class="dropdown">
-        <button class="btn btn-outline-danger dropdown-toggle d-flex align-items-center gap-2"
-                type="button"
-                id="donorProfileDropdown"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <div class="dropdown">
+                    <button class="btn btn-outline-danger btn-sm dropdown-toggle"
+                            type="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        @User.Identity.Name
+                    </button>
 
-            <i class="bi bi-person-circle"></i>
-            @User.Identity.Name
-        </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item"
+                               asp-controller="Account"
+                               asp-action="Profile">
+                                View Your Info
+                            </a>
+                        </li>
 
-        <ul class="dropdown-menu dropdown-menu-end shadow"
-            aria-labelledby="donorProfileDropdown">
+                        <li>
+                            <hr class="dropdown-divider" />
+                        </li>
 
-            <li>
-                <a class="dropdown-item"
+                        <li>
+                            <form asp-controller="Account"
+                                  asp-action="Logout"
+                                  method="post">
+                                <button type="submit"
+                                        class="dropdown-item text-danger">
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            }
+            else
+            {
+                <a class="btn btn-outline-danger btn-sm"
                    asp-controller="Account"
-                   asp-action="Profile">
-                    <i class="bi bi-person-lines-fill me-2"></i>
-                    View Your Info
+                   asp-action="Login">
+                    Login
+                </a>
+
+                <a class="btn btn-danger btn-sm"
+                   asp-controller="Account"
+                   asp-action="Register">
+                    Register
+                </a>
+            }
+
+        </div>
+
+    </div>
+</nav>
+
+<!-- MOBILE OFFCANVAS MENU -->
+<div class="offcanvas offcanvas-start"
+     
+     tabindex="-1"
+     id="mobileMenu"
+     aria-labelledby="mobileMenuLabel"
+     data-bs-backdrop="true"
+     data-bs-scroll="false">
+
+    <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title fw-bold text-danger"
+            id="mobileMenuLabel">
+            🩸 Navigation
+        </h5>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close">
+        </button>
+    </div>
+
+    <div class="offcanvas-body">
+
+        <ul class="navbar-nav gap-3">
+
+            <li class="nav-item">
+                <a class="nav-link text-dark px-3 @(currentController == "Home" && currentAction == "Index" ? "border-bottom border-danger border-3" : "")"
+                   asp-controller="Home"
+                   asp-action="Index">
+                    Home
                 </a>
             </li>
 
-            <li><hr class="dropdown-divider" /></li>
+            <li class="nav-item">
+                <a class="nav-link text-dark px-3 @(currentController == "Home" && currentAction == "LearnMore" ? "border-bottom border-danger border-3" : "")"
+                   asp-controller="Home"
+                   asp-action="LearnMore">
+                    🩸Blood Guide &Donation
+                </a>
+            </li>
 
-            <li>
-                <form asp-controller="Account"
-                      asp-action="Logout"
-                      method="post">
-
-                    <button type="submit"
-                            class="dropdown-item text-danger">
-                        <i class="bi bi-box-arrow-right me-2"></i>
-                        Logout
-                    </button>
-
-                </form>
+            <li class="nav-item">
+                <a class="nav-link text-dark px-3 @(currentController == "Home" && currentAction == "Privacy" ? "border-bottom border-danger border-3" : "")"
+                   asp-controller="Home"
+                   asp-action="Privacy">
+                    Privacy & Policy
+                </a>
             </li>
 
         </ul>
+
     </div>
-}
+</div>
 
-                else
-                {
-                    <a asp-controller="Account"
-                       asp-action="Login"
-                       class="btn btn-outline-danger">
-                        Login
-                    </a>
-
-                    <a asp-controller="Account"
-                       asp-action="Register"
-                       class="btn btn-danger">
-                        Register
-                    </a>
-                }
-
-            </div>
-
-        </div>
-    </div>
-</nav>
 
     </header>
     <div class="container">
@@ -135,3 +210,16 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
+
+    <script>
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 992) {
+            const menu = document.getElementById('mobileMenu');
+            const instance = bootstrap.Offcanvas.getInstance(menu);
+
+            if (instance) {
+                instance.hide();
+            }
+        }
+    });
+</script>

@@ -109,9 +109,35 @@
                     </span>
                 }
 
+           
             </form>
         </div>
     </div>
+
+    <!-- DANGER ZONE -->
+    <div class="card border-danger rounded-4 mt-4">
+        <div class="card-body p-4">
+
+            <h5 class="fw-bold text-danger">
+                Danger Zone
+            </h5>
+
+            <p class="text-muted mb-3">
+                Permanently delete your donor account
+                and remove your information from this platform.
+            </p>
+
+            <a asp-controller="Account"
+               asp-action="DeleteAccount"
+               class="btn btn-outline-danger">
+                Delete My Account
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
 
     <!-- PERSONAL DETAILS -->
     <div class="card border-0 shadow rounded-4 mb-4">
@@ -294,6 +320,7 @@
                 @toastMessage
             </div>
         </div>
+
     </div>
 }
 

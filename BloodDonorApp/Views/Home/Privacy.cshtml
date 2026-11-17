@@ -1,6 +1,514 @@
-﻿@{
-    ViewData["Title"] = "Privacy Policy";
+﻿
+@{
+    ViewData["Title"] = "Privacy & Policy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<div class="container py-4 py-md-5">
+
+    <!-- PAGE HEADER -->
+    <section class="text-center mb-5">
+        <div class="display-4 mb-3">🔒</div>
+
+        <h1 class="fw-bold">Privacy & Policy</h1>
+
+        <p class="lead text-muted mx-auto"
+           style="max-width: 750px;">
+            Your information matters. Understand how your
+            donor details are displayed, protected, and managed
+            on our platform.
+        </p>
+
+        <span class="badge bg-danger rounded-pill px-3 py-2">
+            Transparency • Responsibility • Privacy
+        </span>
+    </section>
+
+    <!-- IMPORTANT NOTICE -->
+    <section class="mb-5">
+        <div class="alert alert-warning rounded-4 p-4">
+            <h5 class="fw-bold">
+                ⚠️ Important Privacy Notice
+            </h5>
+
+            <p class="mb-0">
+                This platform is designed to help connect
+                voluntary blood donors with people in need.
+                Donor profiles are intended to be publicly
+                discoverable. Only certain information is
+                restricted from immediate display.
+                Please understand our visibility policy
+                before registering.
+            </p>
+        </div>
+    </section>
+
+    <!-- PRIVACY COMMITMENT -->
+    <section class="mb-5">
+        <h2 class="fw-bold mb-3">
+            🛡️ Our Privacy Commitment
+        </h2>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+
+                <p>
+                    BloodDonorApp collects information
+                    necessary to maintain donor profiles,
+                    support donor searches, and help people
+                    find potential blood donors.
+                </p>
+
+                <p class="mb-0">
+                    We aim to be transparent about how donor
+                    information is used. Some information
+                    may be visible to visitors because
+                    public donor discovery is a core
+                    purpose of this platform.
+                </p>
+
+            </div>
+        </div>
+    </section>
+
+  
+<!-- PUBLIC INFORMATION -->
+<section class="mb-5">
+    <h2 class="fw-bold mb-3">
+        🌐 What Information Can Others See?
+    </h2>
+
+    <p class="text-muted">
+        BloodDonorApp displays certain donor information
+        to help people find suitable blood donors.
+        Information is displayed in different stages
+        to keep donor search simple and organized.
+    </p>
+
+    <div class="row g-3">
+
+        <!-- DIRECTLY VISIBLE -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold text-danger">
+                        👁️ Public Donor Listing
+                    </h5>
+
+                    <p class="small text-muted">
+                        Visible directly in donor search results.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>First name</li>
+                        <li>Last name</li>
+                        <li>Age</li>
+                        <li>Blood group</li>
+                        <li>Gender</li>
+                        <li>Donation availability status</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAILS ON CLICK -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold text-primary">
+                        🔎 Additional Donor Details
+                    </h5>
+
+                    <p class="small text-muted">
+                        Visible when someone opens a donor record.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>Email address</li>
+                        <li>State</li>
+                        <li>PIN code</li>
+                        <li>Disability information</li>
+                        <li>Tattoo information</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- PRIVATE -->
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold text-success">
+                        🔒 Information We Don't Display
+                    </h5>
+
+                    <p class="small text-muted">
+                        These details are not shown
+                        in public donor profiles.
+                    </p>
+
+                    <ul class="mb-0">
+                        <li>Full date of birth</li>
+                        <li>Exact donation dates</li>
+                        <li>Donation history</li>
+                        <li>Password and password hash</li>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="alert alert-info rounded-4 mt-3">
+        <strong>About age and availability:</strong>
+        We calculate your age from your date of birth,
+        but do not publicly display your full birth date.
+        Your latest donation date is used to calculate
+        donation availability and support donor searches,
+        without displaying your donation history.
+    </div>
+</section>
+
+
+   
+<!-- MOBILE NUMBER -->
+<section class="mb-5">
+    <h2 class="fw-bold mb-3">
+        📱 Mobile Number & Contact Privacy
+    </h2>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+
+            <p>
+                Your registered mobile number is not displayed
+                directly in public donor listings or the
+                initial donor details view.
+            </p>
+
+            <p>
+                Visitors who wish to contact you regarding
+                blood donation can use the available
+                contact-reveal option to view your number.
+            </p>
+
+            <div class="alert alert-warning">
+                <strong>Please understand:</strong>
+                Your mobile number is hidden by default,
+                but it is not completely private.
+                Visitors who reveal it may save or use
+                the number to contact you.
+            </div>
+
+            <h6 class="fw-bold">
+                Can I change my mobile number?
+            </h6>
+
+            <p class="mb-0">
+                Mobile number updates are not supported
+                in the current version of BloodDonorApp.
+                This feature may become available in a
+                future update.
+            </p>
+
+        </div>
+    </div>
+</section>
+
+    <!-- RESPONSIBILITIES -->
+    <section class="mb-5">
+        <h2 class="fw-bold mb-3">
+            🤝 Your Responsibilities
+        </h2>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+
+                <ul class="mb-0">
+                    <li class="mb-2">
+                        Provide accurate and truthful information
+                        during registration.
+                    </li>
+
+                    <li class="mb-2">
+                        Keep your location and donation history
+                        updated whenever possible.
+                    </li>
+
+                    <li class="mb-2">
+                        Do not register using another person's
+                        contact information without permission.
+                    </li>
+
+                    <li class="mb-2">
+                        Avoid including unnecessary sensitive
+                        information in publicly visible fields.
+                    </li>
+
+                    <li class="mb-2">
+                        Never share your password with anyone.
+                    </li>
+
+                    <li>
+                        Report suspicious contact attempts
+                        and avoid sharing financial details,
+                        OTPs, or identity documents with strangers.
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- PROFILE UPDATES -->
+    <section class="mb-5">
+        <h2 class="fw-bold mb-3">
+            ✏️ Managing Your Information
+        </h2>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+
+                <h5 class="fw-bold text-success">
+                    Information You Can Update
+                </h5>
+
+                <p>
+                    After logging in, you can update supported
+                    profile details such as your name, email
+                    address, location, disability and tattoo
+                    information, and latest donation date.
+                </p>
+
+                <h5 class="fw-bold text-danger mt-4">
+                    Information You Cannot Currently Update
+                </h5>
+
+                <p>
+                    At this stage of the project, mobile
+                    numbers cannot be changed directly
+                    after registration.
+                </p>
+
+                <div class="alert alert-info mb-0">
+                    We may introduce a secure mobile-number
+                    update feature in a future version.
+                    Other registration details may also
+                    remain restricted to preserve
+                    account and donor record consistency.
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+   
+<!-- ACCOUNT DELETION -->
+<section class="mb-5">
+    <h2 class="fw-bold mb-3">
+        🗑️ Account Deletion & Your Control
+    </h2>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+
+            <p>
+                You have the right to stop participating
+                as a blood donor on BloodDonorApp.
+            </p>
+
+            <p>
+                You can delete your account at any time
+                through your profile settings.
+                Account deletion requires confirmation
+                to help prevent accidental removal.
+            </p>
+
+            <h6 class="fw-bold text-danger">
+                What happens when you delete your account?
+            </h6>
+
+            <ul>
+                <li>
+                    Your donor profile is removed from
+                    public donor searches.
+                </li>
+                <li>
+                    Your account can no longer be used
+                    to sign in.
+                </li>
+                <li>
+                    Your donor information is deleted
+                    from the active application database.
+                </li>
+                <li>
+                    Information previously saved or copied
+                    by other visitors cannot necessarily
+                    be removed by BloodDonorApp.
+                </li>
+            </ul>
+
+            <div class="alert alert-warning mb-0">
+                <strong>Important:</strong>
+                Account deletion is permanent.
+                If you wish to participate again,
+                you will need to register a new account.
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- RESPONSIBLE USE -->
+<section class="mb-5">
+    <h2 class="fw-bold mb-3">
+        🤝 Responsible Use of Donor Information
+    </h2>
+
+    <div class="card border-0 shadow-sm rounded-4">
+        <div class="card-body p-4">
+
+            <p>
+                Donor information is provided to help
+                people find voluntary blood donors.
+                Visitors are expected to use this
+                information responsibly.
+            </p>
+
+            <ul class="mb-0">
+                <li class="mb-2">
+                    Contact donors only for genuine
+                    blood donation-related purposes.
+                </li>
+
+                <li class="mb-2">
+                    Respect a donor's decision to
+                    accept or decline a donation request.
+                </li>
+
+                <li class="mb-2">
+                    Do not use donor information for
+                    marketing, spam, or harassment.
+                </li>
+
+                <li class="mb-2">
+                    Do not collect or distribute donor
+                    contact details without permission.
+                </li>
+
+                <li>
+                    Never request passwords, OTPs,
+                    payments, or unnecessary personal
+                    documents from donors.
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</section>
+
+
+    <!-- SECURITY -->
+    <section class="mb-5">
+        <h2 class="fw-bold mb-3">
+            🔐 Account & Data Security
+        </h2>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+
+                <p>
+                    We use password hashing and
+                    authentication mechanisms to help
+                    protect donor accounts.
+                </p>
+
+                <ul>
+                    <li>
+                        Passwords are stored as hashes,
+                        not readable plain text.
+                    </li>
+                    <li>
+                        Authentication is required to
+                        manage your personal profile.
+                    </li>
+                    <li>
+                        Users should protect their
+                        login credentials.
+                    </li>
+                </ul>
+
+                <p class="mb-0">
+                    No online platform can guarantee
+                    complete security. Avoid using
+                    shared devices without logging out.
+                </p>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- DISCLAIMER -->
+    <section class="mb-5">
+        <h2 class="fw-bold mb-3">
+            ⚖️ Important Disclaimer
+        </h2>
+
+        <div class="alert alert-light border rounded-4 p-4">
+
+            <p>
+                BloodDonorApp is intended to support
+                voluntary donor discovery and awareness.
+                It is not a hospital, licensed blood bank,
+                or emergency medical service.
+            </p>
+
+            <p>
+                Registration does not guarantee donor
+                availability, medical eligibility,
+                compatibility, or a successful donation.
+            </p>
+
+            <p class="mb-0">
+                All donations and transfusions must
+                follow applicable medical guidelines
+                and be coordinated through qualified
+                healthcare professionals.
+            </p>
+
+        </div>
+    </section>
+
+    <!-- FINAL NOTE -->
+    <section class="bg-danger text-white rounded-4 p-4 p-md-5 text-center">
+
+        <h3 class="fw-bold">
+            Your Privacy. Your Responsibility.
+        </h3>
+
+        <p>
+            By using this platform, you acknowledge
+            that certain donor information may be
+            publicly accessible and agree to provide
+            accurate information responsibly.
+        </p>
+
+        <a asp-controller="Home"
+           asp-action="LearnMore"
+           class="btn btn-light text-danger fw-bold rounded-pill px-4">
+            Explore Blood Guide
+        </a>
+
+    </section>
+
+    <p class="text-center text-muted small mt-4">
+        Privacy & Policy — BloodDonorApp
+    </p>
+
+</div>

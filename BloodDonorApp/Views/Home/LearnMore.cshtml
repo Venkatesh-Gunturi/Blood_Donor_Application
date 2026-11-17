@@ -1,0 +1,627 @@
+﻿
+@{
+    ViewData["Title"] = "Blood Guide";
+}
+
+<div class="container py-4 py-md-5">
+
+    <!-- HERO SECTION -->
+    <section class="text-center mb-5">
+        <div class="display-4 mb-3">🩸</div>
+        <h1 class="fw-bold">Your Complete Blood Guide</h1>
+        <p class="lead text-muted mx-auto" style="max-width:750px;">
+            Understand your blood, learn how to donate responsibly,
+            care for your health, and help people in need.
+        </p>
+
+        <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+            <a href="#bloodGroups" class="btn btn-danger rounded-pill px-4">
+                Explore Blood Groups
+            </a>
+            <a href="#emergency" class="btn btn-outline-danger rounded-pill px-4">
+                Emergency Resources
+            </a>
+        </div>
+    </section>
+
+    <!-- QUICK NAVIGATION -->
+    <section class="mb-5">
+        <div class="row g-3">
+            @{
+                var sections = new[]
+                {
+                    new { Id = "basics", Icon = "🫀", Title = "Blood Basics" },
+                    new { Id = "bloodGroups", Icon = "🩸", Title = "Blood Groups" },
+                    new { Id = "donation", Icon = "🤝", Title = "Donation Guide" },
+                    new { Id = "donorCare", Icon = "❤️", Title = "Donor Care" },
+                    new { Id = "recipients", Icon = "🏥", Title = "Recipient Guide" },
+                    new { Id = "health", Icon = "🥗", Title = "Blood Health" },
+                    new { Id = "faq", Icon = "❓", Title = "FAQs" },
+                    new { Id = "emergency", Icon = "🚑", Title = "Emergency Help" }
+                };
+            }
+
+            @foreach (var item in sections)
+            {
+                <div class="col-6 col-md-3">
+                    <a href="#@item.Id"
+                       class="text-decoration-none text-dark">
+                        <div class="card border-0 shadow-sm rounded-4 h-100">
+                            <div class="card-body text-center p-3">
+                                <div class="fs-2 mb-2">@item.Icon</div>
+                                <h6 class="fw-semibold mb-0">@item.Title</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+
+    <!-- SECTION 1: BLOOD BASICS -->
+    <section id="basics" class="mb-5">
+        <h2 class="fw-bold mb-3">🫀 Understanding Human Blood</h2>
+        <p class="text-muted">
+            Blood carries oxygen, nutrients, hormones, and other
+            substances throughout the body. It also helps fight
+            infections, regulate temperature, and control bleeding.
+        </p>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="text-danger fw-bold">Red Blood Cells</h5>
+                        <p class="mb-0">
+                            Contain hemoglobin, which carries oxygen
+                            from the lungs to body tissues.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="text-danger fw-bold">White Blood Cells</h5>
+                        <p class="mb-0">
+                            Help the immune system identify and
+                            fight infections and disease.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="text-danger fw-bold">Platelets</h5>
+                        <p class="mb-0">
+                            Help form blood clots and reduce bleeding
+                            after an injury.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="text-danger fw-bold">Plasma</h5>
+                        <p class="mb-0">
+                            The liquid portion of blood that carries
+                            proteins, nutrients, and clotting factors.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 2: BLOOD GROUPS -->
+    <section id="bloodGroups" class="mb-5">
+        <h2 class="fw-bold mb-3">🩸 Blood Groups & Compatibility</h2>
+
+        <p>
+            Blood groups are classified using the ABO and Rh systems.
+            The eight commonly recognized groups are A+, A-, B+, B-,
+            AB+, AB-, O+, and O-.
+        </p>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Blood Group</th>
+                        <th>Can Receive Red Cells From</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>O-</td><td>O-</td></tr>
+                    <tr><td>O+</td><td>O+, O-</td></tr>
+                    <tr><td>A-</td><td>A-, O-</td></tr>
+                    <tr><td>A+</td><td>A+, A-, O+, O-</td></tr>
+                    <tr><td>B-</td><td>B-, O-</td></tr>
+                    <tr><td>B+</td><td>B+, B-, O+, O-</td></tr>
+                    <tr><td>AB-</td><td>AB-, A-, B-, O-</td></tr>
+                    <tr><td>AB+</td><td>All eight common groups</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="alert alert-warning rounded-4">
+            <strong>Important:</strong>
+            This table is a simplified guide for red blood cell
+            transfusions only. Plasma and platelet compatibility
+            differ. Hospitals must perform appropriate blood typing,
+            antibody testing, and compatibility checks before transfusion.
+        </div>
+
+        <div class="card border-0 bg-light rounded-4">
+            <div class="card-body p-4">
+                <h5 class="fw-bold">What about Bombay Blood Group (Oh)?</h5>
+                <p class="mb-0">
+                    Bombay phenotype is a rare blood type with special
+                    compatibility requirements. People with this phenotype
+                    generally require blood from compatible Bombay phenotype
+                    donors. Specialist blood bank assessment is essential.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SECTION 3: DONATION GUIDE -->
+    <section id="donation" class="mb-5">
+        <h2 class="fw-bold mb-3">🤝 Blood Donation Guide</h2>
+
+        <p>
+            Donated blood is used in emergency care, surgeries,
+            cancer treatment, childbirth complications, and
+            treatment of blood disorders.
+        </p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">1. Before Donation</h5>
+                        <p class="mb-0">
+                            Get sufficient sleep, eat normally,
+                            stay hydrated, and disclose medications,
+                            illnesses, and recent procedures honestly.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">2. During Donation</h5>
+                        <p class="mb-0">
+                            Complete the health questionnaire and screening.
+                            Trained professionals collect blood using
+                            sterile, single-use equipment.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">3. After Donation</h5>
+                        <p class="mb-0">
+                            Rest, drink fluids, eat well, and follow
+                            the blood centre's instructions about
+                            exercise and heavy lifting.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="fw-bold">Who can donate?</h5>
+        <p>
+            Donation eligibility depends on age, weight, hemoglobin,
+            general health, medical history, medications, and donation
+            history. In India, whole blood donor selection follows
+            national blood transfusion guidelines.
+        </p>
+
+        <div class="alert alert-info rounded-4">
+            Your profile's six-month interval is a simplified project
+            availability indicator. It is not a substitute for the
+            eligibility decision made by a licensed blood centre.
+        </div>
+
+        <a href="https://www.who.int/campaigns/world-blood-donor-day/who-can-give-blood"
+           target="_blank" rel="noopener noreferrer"
+           class="btn btn-outline-danger rounded-3">
+            WHO Donor Eligibility Guide ↗
+        </a>
+    </section>
+
+    <!-- SECTION 4: DONOR RESPONSIBILITIES -->
+    <section id="donorCare" class="mb-5">
+        <h2 class="fw-bold mb-3">❤️ Donor Responsibilities & Care</h2>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h5 class="fw-bold text-danger">A Responsible Donor Should:</h5>
+
+                <ul class="mb-0">
+                    <li class="mb-2">
+                        Provide truthful medical and donation history.
+                    </li>
+                    <li class="mb-2">
+                        Never donate while unwell or against medical advice.
+                    </li>
+                    <li class="mb-2">
+                        Respect the recommended waiting period between donations.
+                    </li>
+                    <li class="mb-2">
+                        Keep contact details and donation history updated.
+                    </li>
+                    <li class="mb-2">
+                        Inform the blood centre about any symptoms
+                        or concerns after donating.
+                    </li>
+                    <li>
+                        Donate voluntarily without pressuring others.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="alert alert-light border rounded-4 mt-3">
+            <strong>Aftercare tip:</strong>
+            If you feel dizzy after donation, sit or lie down and
+            inform blood centre staff. Seek medical attention for
+            persistent or severe symptoms.
+        </div>
+    </section>
+
+    <!-- SECTION 5: RECIPIENT GUIDE -->
+    <section id="recipients" class="mb-5">
+        <h2 class="fw-bold mb-3">🏥 Guide for Blood Recipients & Families</h2>
+
+        <p>
+            Blood transfusions must be arranged and administered
+            through qualified medical professionals and licensed
+            healthcare facilities.
+        </p>
+
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-4">
+                <h5 class="fw-bold">Important Steps</h5>
+                <ol class="mb-0">
+                    <li class="mb-2">
+                        Contact the treating hospital or blood bank first.
+                    </li>
+                    <li class="mb-2">
+                        Confirm the exact blood component required,
+                        such as red cells, platelets, or plasma.
+                    </li>
+                    <li class="mb-2">
+                        Provide the hospital with the patient's
+                        required documentation.
+                    </li>
+                    <li class="mb-2">
+                        Allow the blood bank to perform all necessary
+                        compatibility and safety testing.
+                    </li>
+                    <li>
+                        Report any symptoms during or after transfusion
+                        immediately to the medical team.
+                    </li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="alert alert-danger rounded-4 mt-3">
+            <strong>Never arrange an unsupervised blood transfusion.</strong>
+            A donor's stated blood group alone is not enough to
+            establish transfusion compatibility.
+        </div>
+    </section>
+
+    <!-- SECTION 6: BLOOD HEALTH -->
+    <section id="health" class="mb-5">
+        <h2 class="fw-bold mb-3">🥗 Maintaining Healthy Blood</h2>
+
+        <p>
+            A balanced diet and healthy lifestyle support normal
+            red blood cell production and overall wellbeing.
+        </p>
+
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">Iron</h5>
+                        <p>
+                            Iron is needed to produce hemoglobin.
+                            Sources include lentils, beans,
+                            leafy greens, meat, and fortified foods.
+                        </p>
+                        <small class="text-muted">
+                            Vitamin C-rich foods can help improve
+                            absorption of plant-based iron.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">Vitamin B12</h5>
+                        <p class="mb-0">
+                            Supports healthy red blood cell production.
+                            Sources include dairy, eggs, meat, and
+                            appropriately fortified foods.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">Folate</h5>
+                        <p class="mb-0">
+                            Helps the body produce healthy cells.
+                            Sources include leafy vegetables,
+                            legumes, and fortified grains.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold text-danger">Healthy Habits</h5>
+                        <p class="mb-0">
+                            Stay hydrated, sleep adequately,
+                            exercise regularly, and attend recommended
+                            medical checkups.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="alert alert-warning rounded-4 mt-3">
+            Low hemoglobin can have several causes. Do not take
+            iron supplements solely to raise your donation eligibility
+            without appropriate medical advice.
+        </div>
+    </section>
+
+    <!-- SECTION 7: FAQs -->
+    <section id="faq" class="mb-5">
+        <h2 class="fw-bold mb-3">❓ Frequently Asked Questions</h2>
+
+        <div class="accordion" id="bloodFaq">
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqOne">
+                        Is blood donation safe?
+                    </button>
+                </h2>
+                <div id="faqOne"
+                     class="accordion-collapse collapse show"
+                     data-bs-parent="#bloodFaq">
+                    <div class="accordion-body">
+                        Blood donation is generally safe for eligible
+                        donors when performed by trained professionals
+                        using sterile, single-use equipment.
+                        Temporary dizziness or bruising can occur.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqTwo">
+                        Can I donate if I have a tattoo?
+                    </button>
+                </h2>
+                <div id="faqTwo"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#bloodFaq">
+                    <div class="accordion-body">
+                        Recent tattoos or piercings may require a
+                        waiting period. The blood centre will apply
+                        the current local eligibility guidelines.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqThree">
+                        How often can I donate blood?
+                    </button>
+                </h2>
+                <div id="faqThree"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#bloodFaq">
+                    <div class="accordion-body">
+                        Donation intervals depend on the donation
+                        type and applicable regulations. Consult
+                        a licensed blood centre before donating again.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqFour">
+                        Is O-negative blood compatible with everyone?
+                    </button>
+                </h2>
+                <div id="faqFour"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#bloodFaq">
+                    <div class="accordion-body">
+                        O-negative red cells are often called
+                        universal donor red cells, but other
+                        blood group antigens and antibodies matter.
+                        Compatibility testing remains essential.
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#faqFive">
+                        Can donated blood help more than one patient?
+                    </button>
+                </h2>
+                <div id="faqFive"
+                     class="accordion-collapse collapse"
+                     data-bs-parent="#bloodFaq">
+                    <div class="accordion-body">
+                        Yes. Blood can be separated into components
+                        such as red cells, plasma, and platelets,
+                        which may help different patients.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- SECTION 8: EMERGENCY HELP -->
+    <section id="emergency" class="mb-5">
+        <h2 class="fw-bold mb-3">🚑 Emergency Help & Blood Resources</h2>
+
+        <div class="alert alert-danger rounded-4 p-4">
+            <h4 class="fw-bold">Medical Emergency?</h4>
+            <p>
+                If someone is experiencing a medical emergency
+                in India, contact emergency services immediately.
+                Do not delay emergency care while searching for donors.
+            </p>
+
+            <a href="tel:112" class="btn btn-danger btn-lg">
+                📞 Call 112
+            </a>
+        </div>
+
+        <div class="row g-3">
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold">National Ambulance Service</h5>
+                        <p>
+                            India's national helpline directory
+                            lists 102 for ambulance services.
+                            Local availability may vary.
+                        </p>
+                        <a href="tel:102"
+                           class="btn btn-outline-danger">
+                            Call 102
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-body p-4">
+                        <h5 class="fw-bold">Find Blood Banks</h5>
+                        <p>
+                            Search for blood centres, blood stock,
+                            and donation camps using India's
+                            official eRaktKosh service.
+                        </p>
+                        <a href="https://eraktkosh.mohfw.gov.in/"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="btn btn-outline-danger">
+                            Visit eRaktKosh ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- OFFICIAL RESOURCES -->
+    <section class="mb-5">
+        <h2 class="fw-bold mb-3">📚 Trusted Resources</h2>
+
+        <div class="list-group shadow-sm rounded-4 overflow-hidden">
+            <a href="https://www.who.int/news-room/questions-and-answers/item/blood-products-why-should-i-donate-blood"
+               target="_blank" rel="noopener noreferrer"
+               class="list-group-item list-group-item-action p-3">
+                <strong>World Health Organization</strong>
+                <span class="d-block text-muted small">
+                    Why donate blood? Eligibility and donation safety.
+                </span>
+            </a>
+
+            <a href="https://eraktkosh.mohfw.gov.in/BLDAHIMS/bloodbank/eraktkoshfaq.cnt"
+               target="_blank" rel="noopener noreferrer"
+               class="list-group-item list-group-item-action p-3">
+                <strong>eRaktKosh — Official FAQs</strong>
+                <span class="d-block text-muted small">
+                    Indian blood donation information and common questions.
+                </span>
+            </a>
+
+            <a href="https://www.india.gov.in/directory/helpline"
+               target="_blank" rel="noopener noreferrer"
+               class="list-group-item list-group-item-action p-3">
+                <strong>Government of India — Helpline Directory</strong>
+                <span class="d-block text-muted small">
+                    Official national emergency contact information.
+                </span>
+            </a>
+        </div>
+    </section>
+
+    <!-- FINAL CALL TO ACTION -->
+    <section class="bg-danger text-white text-center rounded-4 p-4 p-md-5">
+        <h2 class="fw-bold">Be Someone's Reason to Smile ❤️</h2>
+        <p>
+            Learn about blood donation, register as a voluntary donor,
+            and help build a stronger community.
+        </p>
+
+        <a asp-controller="Account"
+           asp-action="Register"
+           class="btn btn-light text-danger fw-bold px-4 rounded-pill">
+            Become a Donor
+        </a>
+    </section>
+
+    <p class="text-center text-muted small mt-4">
+        Educational information only. Medical eligibility and
+        transfusion decisions must be made by qualified healthcare
+        professionals.
+    </p>
+
+</div>

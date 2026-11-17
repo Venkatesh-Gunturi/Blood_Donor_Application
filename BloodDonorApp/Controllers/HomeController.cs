@@ -18,6 +18,12 @@ namespace BloodDonorApp.Controllers
             return View();
         }
 
+        [HttpGet]
+        public IActionResult LearnMore()
+        {
+            return View();
+        }
+
         public IActionResult Privacy()
         {
             return View();
