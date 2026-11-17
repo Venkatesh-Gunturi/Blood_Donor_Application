@@ -21,6 +21,13 @@
                         </p>
                     </div>
 
+                    @if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success small">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
                     <form asp-controller="Account"
                           asp-action="Login"
                           method="post">

@@ -179,7 +179,7 @@ namespace BloodDonorApp.Controllers
             {
                 ModelState.AddModelError(
                     nameof(model.Password),
-                    "Invalid password.");
+                    "Wrong password.");
 
                 return View(model);
             }
@@ -278,8 +278,69 @@ namespace BloodDonorApp.Controllers
             // Both identifiers match the same donor.
             // Next, we'll securely pass this verified result
             // to the Reset Password page.
+            HttpContext.Session.SetInt32("ResetDonorId", emailDonor.Id);
+
             return RedirectToAction("ResetPassword");
         }
+
+        [HttpGet]
+        public IActionResult ResetPassword()
+        {
+            int? donorId = HttpContext.Session.GetInt32("ResetDonorId");
+
+            if (donorId == null)
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+
+            return View(new ResetPasswordViewModel());
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(
+            ResetPasswordViewModel model)
+        {
+            int? donorId = HttpContext.Session.GetInt32("ResetDonorId");
+
+            if (donorId == null)
+            {
+                return RedirectToAction("ForgotPassword");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var donor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.Id == donorId.Value);
+
+            if (donor == null)
+            {
+                HttpContext.Session.Remove("ResetDonorId");
+                return RedirectToAction("ForgotPassword");
+            }
+
+            var passwordHasher = new PasswordHasher<Donor>();
+
+            donor.PasswordHash = passwordHasher.HashPassword(
+                donor,
+                model.NewPassword
+            );
+
+            await _context.SaveChangesAsync();
+
+            // Clear the temporary reset session.
+            HttpContext.Session.Remove("ResetDonorId");
+
+            TempData["SuccessMessage"] =
+                "Password updated successfully. Please log in.";
+
+            return RedirectToAction("Login");
+        }
+
 
     }
 }

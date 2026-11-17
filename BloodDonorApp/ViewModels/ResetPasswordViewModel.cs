@@ -5,9 +5,6 @@ namespace BloodDonorApp.ViewModels
 {
     public class ResetPasswordViewModel
     {
-        [Required]
-        public string Token { get; set; } = string.Empty;
-
         [Required(ErrorMessage = "New password is required.")]
         [MinLength(8, ErrorMessage = "Password must contain at least 8 characters.")]
         [DataType(DataType.Password)]
