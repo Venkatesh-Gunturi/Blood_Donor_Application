@@ -226,5 +226,60 @@ namespace BloodDonorApp.Controllers
         {
             return View(new ForgotPasswordViewModel());
         }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(
+            ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            string email = model.Email.Trim();
+            string mobile = model.MobileNumber.Trim();
+
+            var emailDonor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.Email == email);
+
+            var mobileDonor = await _context.Donors
+                .FirstOrDefaultAsync(d => d.MobileNumber == mobile);
+
+            if (emailDonor == null)
+            {
+                ModelState.AddModelError(
+                    nameof(model.Email),
+                    "This email address is not registered.");
+            }
+
+            if (mobileDonor == null)
+            {
+                ModelState.AddModelError(
+                    nameof(model.MobileNumber),
+                    "This mobile number is not registered.");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            if (emailDonor!.Id != mobileDonor!.Id)
+            {
+                ModelState.AddModelError(
+                    nameof(model.MobileNumber),
+                    "One of Entered email or mobile number do not belong to You.");
+
+                return View(model);
+            }
+
+            // Both identifiers match the same donor.
+            // Next, we'll securely pass this verified result
+            // to the Reset Password page.
+            return RedirectToAction("ResetPassword");
+        }
+
     }
 }

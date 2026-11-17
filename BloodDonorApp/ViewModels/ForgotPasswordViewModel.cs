@@ -6,6 +6,9 @@ namespace BloodDonorApp.ViewModels
     {
         [Required(ErrorMessage = "Email address is required.")]
         [EmailAddress(ErrorMessage = "Enter a valid email address.")]
+        [RegularExpression(
+    @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+    ErrorMessage = "Enter a valid email address.")]
         public string Email { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Mobile number is required.")]

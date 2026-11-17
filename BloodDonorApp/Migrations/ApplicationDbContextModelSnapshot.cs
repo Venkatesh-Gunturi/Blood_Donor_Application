@@ -96,7 +96,7 @@ namespace BloodDonorApp.Migrations
                     b.HasIndex("MobileNumber")
                         .IsUnique();
 
-                    b.ToTable("Donors");
+                    b.ToTable("Donors", (string)null);
                 });
 #pragma warning restore 612, 618
         }

@@ -11,7 +11,7 @@ namespace BloodDonorApp.Data
         }
 
         public DbSet<Donor> Donors { get; set; }
-        public DbSet<PasswordResetToken> PasswordResetTokens { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
