@@ -23,15 +23,23 @@ namespace BloodDonorApp.Controllers
 
         [HttpGet]
         public async Task<IActionResult> Index(
-            string? bloodGroup,
-            string? state,
-            string? pinCode)
+    string? bloodGroup,
+    string? state,
+    string? pinCode,
+    int minAge = 18,
+    int maxAge = 65,
+    string? genderFilter = null,
+    bool? hasTattooFilter = null)
         {
             var model = new DonorSearchViewModel
             {
                 BloodGroup = bloodGroup,
                 State = state,
-                PinCode = pinCode
+                PinCode = pinCode,
+                MinAge = minAge,
+                MaxAge = maxAge,
+                GenderFilter = genderFilter,
+                HasTattooFilter = hasTattooFilter
             };
 
             // Initial page load
@@ -114,6 +122,22 @@ namespace BloodDonorApp.Controllers
             }
 
 
+            if (minAge < 18 || maxAge > 65 || minAge > maxAge)
+            {
+                model.ErrorMessage = "Please select a valid age range between 18 and 65.";
+                return View(model);
+            }
+
+            if (!string.IsNullOrWhiteSpace(genderFilter) &&
+                genderFilter != "Male" &&
+                genderFilter != "Female" &&
+                genderFilter != "Other")
+            {
+                model.ErrorMessage = "Please select a valid gender filter.";
+                return View(model);
+            }
+
+
             // Build database query
             var query = _context.Donors
                 .AsNoTracking()
@@ -127,6 +151,29 @@ namespace BloodDonorApp.Controllers
             if (!string.IsNullOrWhiteSpace(pinCode))
             {
                 query = query.Where(d => d.PinCode == pinCode);
+            }
+
+
+            // Filter by age using date of birth
+            DateTime today = DateTime.Today;
+
+            DateTime oldestAllowedBirthDate = today.AddYears(-(maxAge + 1)).AddDays(1);
+            DateTime youngestAllowedBirthDate = today.AddYears(-minAge);
+
+            query = query.Where(d =>
+                d.DateOfBirth >= oldestAllowedBirthDate &&
+                d.DateOfBirth <= youngestAllowedBirthDate);
+
+            // Filter by gender
+            if (!string.IsNullOrWhiteSpace(genderFilter))
+            {
+                query = query.Where(d => d.Gender == genderFilter);
+            }
+
+            // Filter by tattoo status
+            if (hasTattooFilter.HasValue)
+            {
+                query = query.Where(d => d.HasTattoo == hasTattooFilter.Value);
             }
 
             // Fetch only fields needed for public results
@@ -144,7 +191,7 @@ namespace BloodDonorApp.Controllers
                 })
                 .ToListAsync();
 
-            DateTime today = DateTime.Today;
+           
 
             // Convert database results into public view models
             model.Donors = donors.Select(d =>
@@ -186,21 +233,33 @@ namespace BloodDonorApp.Controllers
             // Handle empty search results
             if (model.Donors.Count == 0)
             {
-                if (!string.IsNullOrWhiteSpace(pinCode))
+                bool filtersApplied =
+                    minAge != 18 ||
+                    maxAge != 65 ||
+                    !string.IsNullOrWhiteSpace(genderFilter) ||
+                    hasTattooFilter.HasValue;
+
+                if (filtersApplied)
+                {
+                    model.EmptyMessage =
+                        "No registered donors match your selected filters. " +
+                        "Try adjusting the age range, gender, or tattoo preference.";
+                }
+                else if (!string.IsNullOrWhiteSpace(pinCode))
                 {
                     model.EmptyMessage = state == "All"
-                        ? $"No {bloodGroup} donor records are currently available for PIN code {pinCode} in BloodDonorApp."
-                        : $"No {bloodGroup} donor records are currently available for PIN code {pinCode}, {state}, in BloodDonorApp.";
+                        ? $"No {bloodGroup} donor records match PIN code {pinCode} in BloodDonorApp."
+                        : $"No {bloodGroup} donor records match PIN code {pinCode}, {state}, in BloodDonorApp.";
                 }
                 else if (state == "All")
                 {
                     model.EmptyMessage =
-                        $"No {bloodGroup} donor records are currently available in BloodDonorApp.";
+                        $"No {bloodGroup} donor records match your search in BloodDonorApp.";
                 }
                 else
                 {
                     model.EmptyMessage =
-                        $"No {bloodGroup} donor records are currently available for {state} in BloodDonorApp.";
+                        $"No {bloodGroup} donor records match your search in {state} in BloodDonorApp.";
                 }
             }
 

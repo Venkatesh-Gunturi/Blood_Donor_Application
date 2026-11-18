@@ -23,5 +23,13 @@ namespace BloodDonorApp.ViewModels
         // RESULT COUNTS
         public int AvailableCount { get; set; }
         public int UnavailableCount { get; set; }
+
+        public int MinAge { get; set; } = 18;
+
+        public int MaxAge { get; set; } = 65;
+
+        public string? GenderFilter { get; set; }
+
+        public bool? HasTattooFilter { get; set; }
     }
 }
