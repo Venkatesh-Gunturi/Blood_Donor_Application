@@ -1,63 +1,485 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model BloodDonorApp.ViewModels.DonorSearchViewModel
+@{
+    ViewData["Title"] = "Home";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<!-- HERO SECTION -->
+<section class="bg-danger text-white d-flex align-items-center"
+         style="min-height: 25vh;">
 
+    <div class="container py-4">
 
-@if (TempData["ToastMessage"] is string toastMessage)
-{
-    <div class="toast-container position-fixed end-0 p-3"
-         style="top: 80px; z-index: 1050;">
+        <div class="row align-items-center g-3">
 
-        <div id="successToast"
-             class="toast border-0 rounded-5 shadow "
-             role="status"
-             aria-live="polite"
-             aria-atomic="true"
-             data-bs-autohide="true"
-             data-bs-delay="4000">
+            <!-- HERO CONTENT -->
+            <div class="col-12 col-md-9">
 
-            <div class="toast-header bg-success text-white">
-                <strong class="me-auto">Success</strong>
+                <h1 class="fw-bold mb-2 fs-2">
+                    Every Drop Counts.
+                    Every Donor Matters.
+                </h1>
 
-                <button type="button"
-                        class="btn-close btn-close-white"
-                        data-bs-dismiss="toast"
-                        aria-label="Close">
-                </button>
+                <p class="mb-3 opacity-75">
+                    Connecting voluntary blood donors with
+                    people in need. Together, we can help
+                    save lives.
+                </p>
+
+                <div class="d-flex flex-wrap gap-2">
+
+                    <!-- FIND DONOR: SCROLL TO SECTION -->
+                    <a href="#findDonors"
+                       class="btn btn-light text-danger fw-semibold">
+                        <i class="bi bi-search me-1"></i>
+                        Find a Donor
+                    </a>
+
+                    <!-- SHOW ONLY WHEN NOT LOGGED IN -->
+                    @if (User.Identity?.IsAuthenticated != true)
+                    {
+                        <a asp-controller="Account"
+                           asp-action="Register"
+                           class="btn btn-outline-light fw-semibold">
+                            <i class="bi bi-heart-fill me-1"></i>
+                            Become a Donor
+                        </a>
+                    }
+
+                </div>
+
             </div>
 
-            <div class="toast-body">
-                @toastMessage
+            <!-- HERO ICON -->
+            <div class="col-md-3 d-none d-md-flex justify-content-center">
+                <i class="bi bi-heart-pulse-fill opacity-75"
+                   style="font-size: 6rem;"></i>
             </div>
 
         </div>
+
     </div>
-}
+
+</section>
 
 
 
-@section Scripts {
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const toastElement = document.getElementById("successToast");
+<!-- FIND DONORS SECTION -->
+<section id="findDonors" class="container py-5">
 
-            if (toastElement) {
-                const toast = bootstrap.Toast.getOrCreateInstance(
-                    toastElement,
-                    {
-                        autohide: true,
-                        delay: 2000
-                    }
-                );
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">
+            <i class="bi bi-search text-danger me-2"></i>
+            Find Blood Donors
+        </h2>
 
-                toast.show();
-            }
-        });
-    </script>
-}
+        <p class="text-muted">
+            Search registered blood donors by blood group
+            and location.
+        </p>
+    </div>
+
+    <!-- SEARCH FORM -->
+    <div class="card border-0 shadow-sm rounded-4">
+
+        <div class="card-body p-4">
+
+            <form method="get"
+                  asp-controller="Home"
+                  asp-action="Index"
+                  asp-fragment="findDonors">
+
+                <div class="row g-3">
+
+                    <!-- BLOOD GROUP -->
+                    <div class="col-12 col-md-4">
+
+                        <label for="bloodGroup"
+                               class="form-label fw-semibold">
+                            Blood Group
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select id="bloodGroup"
+                                name="bloodGroup"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Select Blood Group
+                            </option>
+
+                            @foreach (var group in new[]
+                            {
+                                "A+", "A-",
+                                "B+", "B-",
+                                "AB+", "AB-",
+                                "O+", "O-",
+                                "Oh (Bombay)"
+                            })
+                                                        {
+                                <option value="@group">@group</option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- STATE -->
+                    <div class="col-12 col-md-4">
+
+                        <label for="state"
+                               class="form-label fw-semibold">
+                            State / UT
+                            <span class="text-danger">*</span>
+                        </label>
+
+                        <select id="state"
+                                name="state"
+                                class="form-select"
+                                required>
+
+                            <option value="">
+                                Select State / UT
+                            </option>
+
+                            <option value="All">
+                                All States &amp; UTs
+                            </option>
+
+                            @foreach (var stateName in new[]
+                            {
+                                "Andhra Pradesh",
+                                "Arunachal Pradesh",
+                                "Assam",
+                                "Bihar",
+                                "Chhattisgarh",
+                                "Goa",
+                                "Gujarat",
+                                "Haryana",
+                                "Himachal Pradesh",
+                                "Jharkhand",
+                                "Karnataka",
+                                "Kerala",
+                                "Madhya Pradesh",
+                                "Maharashtra",
+                                "Manipur",
+                                "Meghalaya",
+                                "Mizoram",
+                                "Nagaland",
+                                "Odisha",
+                                "Punjab",
+                                "Rajasthan",
+                                "Sikkim",
+                                "Tamil Nadu",
+                                "Telangana",
+                                "Tripura",
+                                "Uttar Pradesh",
+                                "Uttarakhand",
+                                "West Bengal",
+                                "Andaman and Nicobar Islands",
+                                "Chandigarh",
+                                "Dadra and Nagar Haveli and Daman and Diu",
+                                "Delhi",
+                                "Jammu and Kashmir",
+                                "Ladakh",
+                                "Lakshadweep",
+                                "Puducherry"
+                            })
+                            {
+                                <option value="@stateName">
+                                    @stateName
+                                </option>
+                            }
+
+                        </select>
+
+                    </div>
+
+                    <!-- PIN CODE -->
+                    <div class="col-12 col-md-4">
+
+                        <label for="pinCode"
+                               class="form-label fw-semibold">
+                            PIN Code
+                            <span class="text-muted small">
+                                (Optional)
+                            </span>
+                        </label>
+
+                        <input type="text"
+                               id="pinCode"
+                               name="pinCode"
+                               class="form-control"
+                               placeholder="Enter 6-digit PIN"
+                               maxlength="6"
+                               minlength="6"
+                               pattern="[0-9]{6}"
+                               inputmode="numeric"
+                               title="Enter a valid 6-digit PIN code" />
+
+                    </div>
+
+                </div>
+
+                <!-- BUTTONS -->
+                <div class="d-flex justify-content-center
+                            gap-2 mt-4">
+
+                    <button type="submit"
+                            class="btn btn-danger px-4">
+
+                        <i class="bi bi-search me-1"></i>
+                        Search Donors
+
+                    </button>
+
+                    <a asp-controller="Home"
+                       asp-action="Index"
+                       asp-fragment="findDonors"
+                       class="btn btn-outline-secondary px-4">
+
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>
+                        Reset
+
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    
+<!-- SEARCH RESULTS -->
+<div id="searchResults" class="mt-5">
+
+    @if (!Model.HasSearched)
+    {
+        <!-- INITIAL STATE -->
+        <div class="text-center py-4">
+
+            <i class="bi bi-people text-secondary"
+               style="font-size: 3rem;"></i>
+
+            <h5 class="fw-semibold mt-3">
+                Find Someone Who Can Help
+            </h5>
+
+            <p class="text-muted">
+                Select a blood group and location,
+                then search to view registered donor records.
+            </p>
+
+        </div>
+    }
+    else if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <!-- VALIDATION ERROR -->
+        <div class="alert alert-warning rounded-3">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            @Model.ErrorMessage
+        </div>
+    }
+    else if (Model.Donors.Count == 0)
+    {
+        <!-- NO MATCHING DONORS -->
+        <div class="text-center py-4">
+
+            <i class="bi bi-person-x text-secondary"
+               style="font-size: 3rem;"></i>
+
+            <h5 class="fw-semibold mt-3">
+                No Registered Donor Records Found
+            </h5>
+
+            <p class="text-muted">
+                @Model.EmptyMessage
+            </p>
+
+            <p class="small text-muted">
+                Try searching another location or
+                removing the PIN code filter.
+            </p>
+
+        </div>
+    }
+    else
+    {
+        <!-- RESULTS HEADER -->
+        <div class="d-flex justify-content-between
+                    align-items-center flex-wrap gap-2 mb-4">
+
+            <div>
+                <h4 class="fw-bold mb-1">
+                    Based on Your Search
+                </h4>
+
+                <p class="text-muted small mb-0">
+                    @Model.Donors.Count registered donor record(s)
+                    found in BloodDonorApp.
+                </p>
+            </div>
+
+            <!-- FILTER BUTTON - COMING NEXT -->
+            <button type="button"
+                    class="btn btn-outline-danger"
+                    disabled>
+                <i class="bi bi-sliders me-1"></i>
+                Filters
+            </button>
+
+        </div>
+
+        <!-- AVAILABLE DONORS -->
+        @if (Model.AvailableCount > 0)
+        {
+            <h5 class="fw-semibold mb-3">
+                <i class="bi bi-check-circle text-success me-2"></i>
+                Potentially Eligible Donors
+                <span class="text-muted">
+                    (@Model.AvailableCount)
+                </span>
+            </h5>
+
+            <div class="row g-3 mb-5">
+
+                @foreach (var donor in Model.Donors.Where(d => d.IsAvailable))
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <div class="card h-100 shadow-sm border-0 rounded-4">
+
+                            <div class="card-body p-4">
+
+                                <div class="d-flex justify-content-between
+                                            align-items-start gap-2 mb-3">
+
+                                    <h5 class="fw-bold mb-0">
+                                        @donor.FirstName @donor.LastName
+                                    </h5>
+
+                                    <span class="badge bg-success">
+                                        Potentially Eligible
+                                    </span>
+
+                                </div>
+
+                                <p class="mb-2">
+                                    <strong>Age:</strong> @donor.Age
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Gender:</strong> @donor.Gender
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Blood Group:</strong>
+                                    <span class="badge bg-danger">
+                                        @donor.BloodGroup
+                                    </span>
+                                </p>
+
+                                <p class="mb-0">
+                                    <strong>State:</strong> @donor.State
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+
+        <!-- UNAVAILABLE DONORS -->
+        @if (Model.UnavailableCount > 0)
+        {
+            <h5 class="fw-semibold mb-3">
+                <i class="bi bi-clock-history text-secondary me-2"></i>
+                Currently Ineligible Donors
+                <span class="text-muted">
+                    (@Model.UnavailableCount)
+                </span>
+            </h5>
+
+            <div class="row g-3">
+
+                @foreach (var donor in Model.Donors.Where(d => !d.IsAvailable))
+                {
+                    <div class="col-12 col-md-6 col-lg-4">
+
+                        <div class="card h-100 shadow-sm border-0 rounded-4">
+
+                            <div class="card-body p-4">
+
+                                <div class="d-flex justify-content-between
+                                            align-items-start gap-2 mb-3">
+
+                                    <h5 class="fw-bold mb-0">
+                                        @donor.FirstName @donor.LastName
+                                    </h5>
+
+                                    <span class="badge bg-secondary">
+                                        Currently Ineligible
+                                    </span>
+
+                                </div>
+
+                                <p class="mb-2">
+                                    <strong>Age:</strong> @donor.Age
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Gender:</strong> @donor.Gender
+                                </p>
+
+                                <p class="mb-2">
+                                    <strong>Blood Group:</strong>
+                                    <span class="badge bg-danger">
+                                        @donor.BloodGroup
+                                    </span>
+                                </p>
+
+                                <p class="mb-0">
+                                    <strong>State:</strong> @donor.State
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+    }
+
+</div>
+
+
+        <div class="text-center py-4">
+
+            <i class="bi bi-people text-secondary"
+               style="font-size: 3rem;"></i>
+
+            <h5 class="fw-semibold mt-3">
+                Find Someone Who Can Help
+            </h5>
+
+            <p class="text-muted">
+                Select a blood group and location,
+                then click Search Donors to see
+                registered donor records.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
 
