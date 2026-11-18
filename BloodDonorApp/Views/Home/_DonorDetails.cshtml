@@ -1,66 +1,94 @@
 ﻿
 @model BloodDonorApp.ViewModels.DonorDetailsViewModel
 
-<div class="modal-header bg-light">
+@{
+    // Status 2 = Recently donated (Red)
+    // Status 1 = Potentially eligible (Green)
+    // Status 0 = Donation date not provided (Green, unverified)
+
+    bool isRecentlyDonated = Model.DonationStatus == 2;
+
+    string themeColor = isRecentlyDonated
+        ? "danger"
+        : "success";
+}
+
+<div class="modal-header bg-@themeColor text-white">
+
     <div>
-        <h3 class="modal-title fw-bold mb-1"
-    id="donorDetailsModalLabel">
+        <h3 class="modal-title fw-bold mb-2"
+            id="donorDetailsModalLabel">
             @Model.FullName
         </h3>
-        <span class="badge bg-danger fs-6">
+
+        <span class="badge bg-white text-@themeColor fs-6">
             @Model.BloodGroup
         </span>
     </div>
 
     <button type="button"
-            class="btn-close"
+            class="btn-close btn-close-white"
             data-bs-dismiss="modal"
             aria-label="Close">
     </button>
+
 </div>
 
 <div class="modal-body">
 
-    <h5 class="fw-semibold mb-3">Donor Information</h5>
+    <h5 class="fw-bold mb-3">
+        <i class="bi bi-person-vcard me-2"></i>
+        Donor Information
+    </h5>
 
+    <!-- THREE COLUMNS ON DESKTOP -->
     <div class="row g-3 mb-4">
 
-        <div class="col-6">
+        <div class="col-6 col-lg-4">
             <small class="text-muted">Age</small>
-            <div class="fw-semibold">@Model.Age years</div>
-        </div>
-
-        <div class="col-6">
-            <small class="text-muted">Gender</small>
-            <div class="fw-semibold">@Model.Gender</div>
-        </div>
-
-        <div class="col-6">
-            <small class="text-muted">State</small>
-            <div class="fw-semibold">@Model.State</div>
-        </div>
-
-        <div class="col-6">
-            <small class="text-muted">PIN Code</small>
-            <div class="fw-semibold">@Model.PinCode</div>
-        </div>
-
-        @if (!string.IsNullOrWhiteSpace(Model.City))
-        {
-            <div class="col-6">
-                <small class="text-muted">City</small>
-                <div class="fw-semibold">@Model.City</div>
+            <div class="fw-semibold">
+                @Model.Age years
             </div>
-        }
+        </div>
 
-        <div class="col-6">
+        <div class="col-6 col-lg-4">
+            <small class="text-muted">Gender</small>
+            <div class="fw-semibold">
+                @Model.Gender
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <small class="text-muted">State</small>
+            <div class="fw-semibold">
+                @Model.State
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <small class="text-muted">PIN Code</small>
+            <div class="fw-semibold">
+                @Model.PinCode
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
+            <small class="text-muted">City</small>
+            <div class="fw-semibold">
+                @(string.IsNullOrWhiteSpace(Model.City)
+                    ? "Not provided"
+                    : Model.City)
+            </div>
+        </div>
+
+        <div class="col-6 col-lg-4">
             <small class="text-muted">Disability</small>
             <div class="fw-semibold">
                 @(Model.HasDisability ? "Yes" : "No")
             </div>
         </div>
 
-        <div class="col-6">
+        <div class="col-6 col-lg-4">
             <small class="text-muted">Tattoo</small>
             <div class="fw-semibold">
                 @(Model.HasTattoo ? "Yes" : "No")
@@ -71,7 +99,10 @@
 
     <hr />
 
-    <h5 class="fw-semibold mb-3">Contact Information</h5>
+    <h5 class="fw-bold mb-3">
+        <i class="bi bi-envelope me-2"></i>
+        Contact Information
+    </h5>
 
     <div class="mb-4">
         <small class="text-muted">Email Address</small>
@@ -84,12 +115,14 @@
         </div>
     </div>
 
+    <!-- DONATION STATUS -->
     @if (Model.DonationStatus == 1)
     {
-        <div class="border border-primary rounded-3 p-3">
-            <h6 class="fw-bold text-primary">
-                <i class="bi bi-info-circle me-1"></i>
-                Potentially Eligible for Donation
+        <div class="border border-success border-2 rounded-3 p-3">
+
+            <h6 class="fw-bold text-success">
+                <i class="bi bi-check-circle-fill me-2"></i>
+                Potentially Eligible for Blood Donation
             </h6>
 
             <p class="mb-0 small">
@@ -97,16 +130,18 @@
                 has not reported donating blood within the
                 previous six months.
 
-                Final eligibility must be confirmed by
-                a qualified healthcare professional.
+                Their current eligibility must still be
+                confirmed by a qualified healthcare professional.
             </p>
+
         </div>
     }
     else if (Model.DonationStatus == 2)
     {
-        <div class="border border-primary rounded-3 p-3">
-            <h6 class="fw-bold text-primary">
-                <i class="bi bi-info-circle me-1"></i>
+        <div class="border border-danger border-2 rounded-3 p-3">
+
+            <h6 class="fw-bold text-danger">
+                <i class="bi bi-exclamation-circle-fill me-2"></i>
                 Recently Donated Blood
             </h6>
 
@@ -114,35 +149,47 @@
                 Based on the information provided, this donor
                 has donated blood recently.
 
-                They may not be eligible to donate again
-                at this time.
+                They may not be eligible to donate blood
+                again at this time.
             </p>
+
         </div>
     }
     else
     {
-        <div class="border border-primary rounded-3 p-3">
-            <h6 class="fw-bold text-primary">
-                <i class="bi bi-info-circle me-1"></i>
-                Donation History Not Provided
+        <div class="border border-success border-2 rounded-3 p-3">
+
+            <h6 class="fw-bold text-success">
+                <i class="bi bi-question-circle-fill me-2"></i>
+                Assumed Available — Not Verified
             </h6>
 
             <p class="mb-0 small">
                 This donor has not provided their last
-                blood donation date.
+                blood donation details, so they are
+                currently listed as assumed available.
 
-                Their current donation eligibility
-                cannot be estimated.
+                Their actual eligibility is unknown.
+                If you urgently need this blood group,
+                please contact the donor by email to
+                confirm their availability.
+
+                A healthcare professional must confirm
+                eligibility before donation.
             </p>
+
         </div>
     }
 
 </div>
 
-<div class="modal-footer">
+<!-- COLORED FOOTER -->
+<div class="modal-footer bg-@themeColor">
+
     <button type="button"
-            class="btn btn-outline-secondary"
+            class="btn btn-light fw-semibold"
             data-bs-dismiss="modal">
         Close
     </button>
+
 </div>

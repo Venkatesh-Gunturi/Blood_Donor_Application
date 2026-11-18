@@ -471,22 +471,6 @@
     </div>
 </div>
 
-<div class="modal fade"
-     id="donorDetailsModal"
-     tabindex="-1"
-     aria-labelledby="donorDetailsModalLabel"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
-
-        <div class="modal-content" id="donorModalContent">
-            <div class="modal-body text-center py-5">
-                Loading donor details...
-            </div>
-        </div>
-
-    </div>
-</div>
 
 
         <!-- AVAILABLE DONORS -->
@@ -506,7 +490,7 @@
                 {
                     <div class="col-12 col-md-6 col-lg-4">
 
-                        <div class="card h-100 shadow-sm border-0 rounded-4"><div class="card h-100 shadow-sm donor-card"
+                        <div class="card h-100 shadow-sm border-0 rounded-4 donor-card"
      role="button"
      tabindex="0"
      data-donor-id="@donor.Id"
@@ -572,7 +556,11 @@
                 {
                     <div class="col-12 col-md-6 col-lg-4">
 
-                        <div class="card h-100 shadow-sm border-0 rounded-4">
+                        <div class="card h-100 shadow-sm border-0 rounded-4 donor-card"
+     role="button"
+     tabindex="0"
+     data-donor-id="@donor.Id"
+     aria-label="View details of @donor.FirstName @donor.LastName">
 
                             <div class="card-body p-4">
 
@@ -622,27 +610,25 @@
 </div>
 
 
-        <div class="text-center py-4">
-
-            <i class="bi bi-people text-secondary"
-               style="font-size: 3rem;"></i>
-
-            <h5 class="fw-semibold mt-3">
-                Find Someone Who Can Help
-            </h5>
-
-            <p class="text-muted">
-                Select a blood group and location,
-                then click Search Donors to see
-                registered donor records.
-            </p>
-
-        </div>
 
     </div>
 
 </section>
 
+<div class="modal fade"
+     id="donorDetailsModal"
+     tabindex="-1"
+     aria-labelledby="donorDetailsModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+        <div class="modal-content" id="donorModalContent">
+            <div class="modal-body text-center py-5">
+                Loading donor details...
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script>
@@ -687,9 +673,27 @@
                         throw new Error("Unable to load donor details.");
                     }
 
-                    const html = await response.text();
+                   const html = await response.text();
 
-                    modalContent.innerHTML = html;
+modalContent.innerHTML = html;
+
+// Match modal border with donor status
+const isRecentlyDonated =
+    modalContent.querySelector(".modal-header")
+        ?.classList.contains("bg-danger");
+
+modalContent.classList.remove(
+    "border",
+    "border-3",
+    "border-danger",
+    "border-success"
+);
+
+modalContent.classList.add(
+    "border",
+    "border-3",
+    isRecentlyDonated ? "border-danger" : "border-success"
+);
                 }
                 catch (error) {
                     modalContent.innerHTML = `
