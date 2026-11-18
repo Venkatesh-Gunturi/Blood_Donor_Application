@@ -266,6 +266,86 @@ namespace BloodDonorApp.Controllers
             return View(model);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> DonorDetails(int id)
+        {
+            var donor = await _context.Donors
+                .AsNoTracking()
+                .Where(d => d.Id == id)
+                .Select(d => new
+                {
+                    d.Id,
+                    d.FirstName,
+                    d.LastName,
+                    d.DateOfBirth,
+                    d.Gender,
+                    d.BloodGroup,
+                    d.State,
+                    d.City,
+                    d.PinCode,
+                    d.HasDisability,
+                    d.HasTattoo,
+                    d.Email,
+                    d.LastDonationDate
+                })
+                .FirstOrDefaultAsync();
+
+            if (donor == null)
+            {
+                return NotFound();
+            }
+
+            DateTime today = DateTime.Today;
+
+            // Calculate age without exposing date of birth
+            int age = today.Year - donor.DateOfBirth.Year;
+
+            if (donor.DateOfBirth.Date > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            // 0 = Unknown
+            // 1 = Potentially eligible
+            // 2 = Recently donated
+            int donationStatus = 0;
+
+            if (donor.LastDonationDate.HasValue)
+            {
+                DateTime lastDonation = donor.LastDonationDate.Value.Date;
+
+                if (lastDonation <= today &&
+                    lastDonation.AddMonths(6) <= today)
+                {
+                    donationStatus = 1;
+                }
+                else
+                {
+                    donationStatus = 2;
+                }
+            }
+
+            var model = new DonorDetailsViewModel
+            {
+                Id = donor.Id,
+                FullName = $"{donor.FirstName} {donor.LastName}",
+                Age = age,
+                Gender = donor.Gender,
+                BloodGroup = donor.BloodGroup,
+                State = donor.State,
+                City = donor.City,
+                PinCode = donor.PinCode,
+                HasDisability = donor.HasDisability,
+                HasTattoo = donor.HasTattoo,
+                Email = donor.Email,
+                DonationStatus = donationStatus
+            };
+
+            return PartialView("_DonorDetails", model);
+        }
+
+
         [HttpGet]
         public IActionResult LearnMore()
         {

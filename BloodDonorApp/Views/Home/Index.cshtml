@@ -471,6 +471,23 @@
     </div>
 </div>
 
+<div class="modal fade"
+     id="donorDetailsModal"
+     tabindex="-1"
+     aria-labelledby="donorDetailsModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-lg modal-dialog-scrollable">
+
+        <div class="modal-content" id="donorModalContent">
+            <div class="modal-body text-center py-5">
+                Loading donor details...
+            </div>
+        </div>
+
+    </div>
+</div>
+
 
         <!-- AVAILABLE DONORS -->
         @if (Model.AvailableCount > 0)
@@ -489,8 +506,11 @@
                 {
                     <div class="col-12 col-md-6 col-lg-4">
 
-                        <div class="card h-100 shadow-sm border-0 rounded-4">
-
+                        <div class="card h-100 shadow-sm border-0 rounded-4"><div class="card h-100 shadow-sm donor-card"
+     role="button"
+     tabindex="0"
+     data-donor-id="@donor.Id"
+     aria-label="View details of @donor.FirstName @donor.LastName">
                             <div class="card-body p-4">
 
                                 <div class="d-flex justify-content-between
@@ -623,3 +643,93 @@
 
 </section>
 
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const modalElement =
+                document.getElementById("donorDetailsModal");
+
+            const modalContent =
+                document.getElementById("donorModalContent");
+
+            const donorModal =
+                bootstrap.Modal.getOrCreateInstance(modalElement);
+
+            const detailsUrl =
+                '@Url.Action("DonorDetails", "Home")';
+
+            async function openDonorDetails(donorId) {
+
+                modalContent.innerHTML = `
+                    <div class="modal-body text-center py-5">
+                        <div class="spinner-border text-danger"
+                             role="status">
+                            <span class="visually-hidden">
+                                Loading...
+                            </span>
+                        </div>
+                        <p class="mt-3 mb-0">
+                            Loading donor details...
+                        </p>
+                    </div>
+                `;
+
+                donorModal.show();
+
+                try {
+                    const response = await fetch(
+                        `${detailsUrl}?id=${encodeURIComponent(donorId)}`
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Unable to load donor details.");
+                    }
+
+                    const html = await response.text();
+
+                    modalContent.innerHTML = html;
+                }
+                catch (error) {
+                    modalContent.innerHTML = `
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                Unable to Load Details
+                            </h5>
+                            <button type="button"
+                                    class="btn-close"
+                                    data-bs-dismiss="modal"
+                                    aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="alert alert-warning mb-0">
+                                Donor details could not be loaded.
+                                Please try again.
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+
+            document.querySelectorAll(".donor-card")
+                .forEach(card => {
+
+                    card.addEventListener("click", function () {
+                        openDonorDetails(this.dataset.donorId);
+                    });
+
+                    card.addEventListener("keydown", function (event) {
+                        if (event.key === "Enter" ||
+                            event.key === " ") {
+                            event.preventDefault();
+                            openDonorDetails(this.dataset.donorId);
+                        }
+                    });
+
+                });
+
+        });
+    </script>
+}

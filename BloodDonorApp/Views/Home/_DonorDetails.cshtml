@@ -1,0 +1,148 @@
+﻿
+@model BloodDonorApp.ViewModels.DonorDetailsViewModel
+
+<div class="modal-header bg-light">
+    <div>
+        <h3 class="modal-title fw-bold mb-1"
+    id="donorDetailsModalLabel">
+            @Model.FullName
+        </h3>
+        <span class="badge bg-danger fs-6">
+            @Model.BloodGroup
+        </span>
+    </div>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close">
+    </button>
+</div>
+
+<div class="modal-body">
+
+    <h5 class="fw-semibold mb-3">Donor Information</h5>
+
+    <div class="row g-3 mb-4">
+
+        <div class="col-6">
+            <small class="text-muted">Age</small>
+            <div class="fw-semibold">@Model.Age years</div>
+        </div>
+
+        <div class="col-6">
+            <small class="text-muted">Gender</small>
+            <div class="fw-semibold">@Model.Gender</div>
+        </div>
+
+        <div class="col-6">
+            <small class="text-muted">State</small>
+            <div class="fw-semibold">@Model.State</div>
+        </div>
+
+        <div class="col-6">
+            <small class="text-muted">PIN Code</small>
+            <div class="fw-semibold">@Model.PinCode</div>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(Model.City))
+        {
+            <div class="col-6">
+                <small class="text-muted">City</small>
+                <div class="fw-semibold">@Model.City</div>
+            </div>
+        }
+
+        <div class="col-6">
+            <small class="text-muted">Disability</small>
+            <div class="fw-semibold">
+                @(Model.HasDisability ? "Yes" : "No")
+            </div>
+        </div>
+
+        <div class="col-6">
+            <small class="text-muted">Tattoo</small>
+            <div class="fw-semibold">
+                @(Model.HasTattoo ? "Yes" : "No")
+            </div>
+        </div>
+
+    </div>
+
+    <hr />
+
+    <h5 class="fw-semibold mb-3">Contact Information</h5>
+
+    <div class="mb-4">
+        <small class="text-muted">Email Address</small>
+
+        <div>
+            <a href="mailto:@Model.Email"
+               class="fw-semibold text-decoration-none">
+                @Model.Email
+            </a>
+        </div>
+    </div>
+
+    @if (Model.DonationStatus == 1)
+    {
+        <div class="border border-primary rounded-3 p-3">
+            <h6 class="fw-bold text-primary">
+                <i class="bi bi-info-circle me-1"></i>
+                Potentially Eligible for Donation
+            </h6>
+
+            <p class="mb-0 small">
+                Based on the information provided, this donor
+                has not reported donating blood within the
+                previous six months.
+
+                Final eligibility must be confirmed by
+                a qualified healthcare professional.
+            </p>
+        </div>
+    }
+    else if (Model.DonationStatus == 2)
+    {
+        <div class="border border-primary rounded-3 p-3">
+            <h6 class="fw-bold text-primary">
+                <i class="bi bi-info-circle me-1"></i>
+                Recently Donated Blood
+            </h6>
+
+            <p class="mb-0 small">
+                Based on the information provided, this donor
+                has donated blood recently.
+
+                They may not be eligible to donate again
+                at this time.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="border border-primary rounded-3 p-3">
+            <h6 class="fw-bold text-primary">
+                <i class="bi bi-info-circle me-1"></i>
+                Donation History Not Provided
+            </h6>
+
+            <p class="mb-0 small">
+                This donor has not provided their last
+                blood donation date.
+
+                Their current donation eligibility
+                cannot be estimated.
+            </p>
+        </div>
+    }
+
+</div>
+
+<div class="modal-footer">
+    <button type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal">
+        Close
+    </button>
+</div>
