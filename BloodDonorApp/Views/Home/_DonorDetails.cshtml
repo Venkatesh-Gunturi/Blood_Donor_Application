@@ -13,10 +13,12 @@
         : "success";
 }
 
+
 <div class="modal-header bg-@themeColor text-white">
 
-    <div>
-        <h3 class="modal-title fw-bold mb-2"
+    <div class="d-flex align-items-center flex-wrap gap-3">
+
+        <h3 class="modal-title fw-bold mb-0"
             id="donorDetailsModalLabel">
             @Model.FullName
         </h3>
@@ -24,6 +26,7 @@
         <span class="badge bg-white text-@themeColor fs-6">
             @Model.BloodGroup
         </span>
+
     </div>
 
     <button type="button"
@@ -33,6 +36,7 @@
     </button>
 
 </div>
+
 
 <div class="modal-body">
 
@@ -44,35 +48,35 @@
     <!-- THREE COLUMNS ON DESKTOP -->
     <div class="row g-3 mb-4">
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">Age</small>
             <div class="fw-semibold">
                 @Model.Age years
             </div>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">Gender</small>
             <div class="fw-semibold">
                 @Model.Gender
             </div>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">State</small>
             <div class="fw-semibold">
                 @Model.State
             </div>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">PIN Code</small>
             <div class="fw-semibold">
                 @Model.PinCode
             </div>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">City</small>
             <div class="fw-semibold">
                 @(string.IsNullOrWhiteSpace(Model.City)
@@ -81,14 +85,14 @@
             </div>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">Disability</small>
             <div class="fw-semibold">
                 @(Model.HasDisability ? "Yes" : "No")
             </div>
         </div>
 
-        <div class="col-6 col-lg-4">
+        <div class="col-4">
             <small class="text-muted">Tattoo</small>
             <div class="fw-semibold">
                 @(Model.HasTattoo ? "Yes" : "No")
@@ -183,13 +187,3 @@
 
 </div>
 
-<!-- COLORED FOOTER -->
-<div class="modal-footer bg-@themeColor">
-
-    <button type="button"
-            class="btn btn-light fw-semibold"
-            data-bs-dismiss="modal">
-        Close
-    </button>
-
-</div>
