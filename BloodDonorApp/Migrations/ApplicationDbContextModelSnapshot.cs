@@ -32,8 +32,8 @@ namespace BloodDonorApp.Migrations
 
                     b.Property<string>("BloodGroup")
                         .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("City")
                         .HasMaxLength(100)
@@ -96,7 +96,7 @@ namespace BloodDonorApp.Migrations
                     b.HasIndex("MobileNumber")
                         .IsUnique();
 
-                    b.ToTable("Donors", (string)null);
+                    b.ToTable("Donors");
                 });
 #pragma warning restore 612, 618
         }

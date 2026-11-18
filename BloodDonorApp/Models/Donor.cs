@@ -24,7 +24,7 @@ namespace BloodDonorApp.Models
         public string Gender { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(5)]
+        [MaxLength(20)]
         public string BloodGroup { get; set; } = string.Empty;
 
         [Required]
