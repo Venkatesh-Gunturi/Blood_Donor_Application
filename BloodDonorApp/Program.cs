@@ -1,9 +1,14 @@
 using BloodDonorApp.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
-
+using BloodDonorApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpClient<PinCodeValidationService>(client =>
+{
+    client.Timeout = TimeSpan.FromSeconds(8);
+});
 
 // Configure SQL Server Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");

@@ -117,7 +117,9 @@
                                 "Oh (Bombay)"
                             })
                                                         {
-                                <option value="@group">@group</option>
+                                <option value="@group" selected="@(Model.BloodGroup == group)">
+    @group
+</option>
                             }
 
                         </select>
@@ -142,9 +144,9 @@
                                 Select State / UT
                             </option>
 
-                            <option value="All">
-                                All States &amp; UTs
-                            </option>
+                            <option value="All" selected="@(Model.State == "All")">
+    All States &amp; UTs
+</option>
 
                             @foreach (var stateName in new[]
                             {
@@ -186,9 +188,9 @@
                                 "Puducherry"
                             })
                             {
-                                <option value="@stateName">
-                                    @stateName
-                                </option>
+                                <option value="@stateName" selected="@(Model.State == stateName)">
+    @stateName
+</option>
                             }
 
                         </select>
@@ -215,7 +217,8 @@
                                minlength="6"
                                pattern="[0-9]{6}"
                                inputmode="numeric"
-                               title="Enter a valid 6-digit PIN code" />
+                               title="Enter a valid 6-digit PIN code"
+                               value="@Model.PinCode"/>
 
                     </div>
 

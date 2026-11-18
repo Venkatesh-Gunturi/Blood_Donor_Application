@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BloodDonorApp.Data;
 using BloodDonorApp.ViewModels;
+using BloodDonorApp.Services;
 
 namespace BloodDonorApp.Controllers
 {
@@ -11,10 +12,12 @@ namespace BloodDonorApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
-        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
+        private readonly PinCodeValidationService _pinCodeService;
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, PinCodeValidationService pinCodeService)
         {
             _logger = logger;
             _context = context;
+            _pinCodeService = pinCodeService;
         }
 
 
@@ -70,6 +73,46 @@ namespace BloodDonorApp.Controllers
                 model.ErrorMessage = "Enter a valid 6-digit PIN code.";
                 return View(model);
             }
+
+
+            // Verify State and PIN Code before searching donors
+            if (!string.IsNullOrWhiteSpace(pinCode))
+            {
+                var pinResult = await _pinCodeService.ValidateAsync(pinCode);
+
+                // Invalid PIN or API failure
+                if (!pinResult.IsValid)
+                {
+                    model.ErrorMessage = pinResult.Error
+                        ?? "Unable to verify the PIN code.";
+
+                    return View(model);
+                }
+
+                // Compare states only when a specific state is selected
+                if (state != "All")
+                {
+                    bool stateMatches = pinResult.States.Any(s =>
+                        string.Equals(
+                            s,
+                            state,
+                            StringComparison.OrdinalIgnoreCase));
+
+                    if (!stateMatches)
+                    {
+                        string actualStates =
+                            string.Join(", ", pinResult.States);
+
+                        model.ErrorMessage =
+                            $"PIN code {pinCode} belongs to {actualStates}, " +
+                            $"but you selected {state}. " +
+                            "Please correct your search location.";
+
+                        return View(model);
+                    }
+                }
+            }
+
 
             // Build database query
             var query = _context.Donors
