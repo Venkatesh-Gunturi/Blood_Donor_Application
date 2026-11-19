@@ -156,12 +156,7 @@ namespace BloodDonorApp.Controllers
             return RedirectToAction("Index", "Home");
 
         }
-
-        [HttpGet]
-        public IActionResult RegisterSuccess()
-        {
-            return View();
-        }
+        
 
         // GET: Account/Login
         [HttpGet]
